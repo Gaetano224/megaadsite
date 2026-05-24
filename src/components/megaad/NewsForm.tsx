@@ -31,8 +31,13 @@ export function NewsForm() {
 
       if (error) {
         console.error("[news_interest] insert error", error);
+        const isNetworkIssue = /failed to fetch|network/i.test(error.message ?? "");
         setStatus("error");
-        setErrorMsg("Impossibile salvare la richiesta. Riprova.");
+        setErrorMsg(
+          isNetworkIssue
+            ? "Problema di connessione al servizio newsletter. Controlla la tua connessione e riprova."
+            : "Non siamo riusciti a salvare la tua richiesta. Riprova tra qualche minuto.",
+        );
         return;
       }
 
@@ -41,9 +46,13 @@ export function NewsForm() {
       setEmail("");
       setConsent(false);
     } catch (err) {
-      console.error(err);
+      console.error("[newsletter] submit failed", err);
       setStatus("error");
-      setErrorMsg("Qualcosa è andato storto. Riprova tra poco.");
+      setErrorMsg(
+        err instanceof Error && /failed to fetch|network/i.test(err.message)
+          ? "Problema di connessione al servizio newsletter. Controlla la tua connessione e riprova."
+          : "Qualcosa è andato storto. Riprova tra poco.",
+      );
     }
   }
 

@@ -13,12 +13,9 @@ const contentsList = [
 ];
 
 const specs = [
-  { label: "Ideatore", value: "G. Mongelli", icon: User },
-  { label: "Autori", value: "G. Mongelli, A. Mei", icon: User },
-  { label: "Illustratore", value: "A. Murtezani", icon: Palette },
-  { label: "Editore", value: "Megaad Publishing", icon: Landmark },
-  { label: "Meccaniche principali", value: "Hero Draft, Griglia tattica, Gestione risorse (Mana), Tiri di dado (D6)", icon: Settings },
-  { label: "Categoria", value: "Skirmish Tattico, Fantasy, Strategico competitivo", icon: Shield },
+  { label: "IDEATORE", value: "G. MONGELLI", icon: User },
+  { label: "AUTORI", value: "G. MONGELLI, A. MEI", icon: User },
+  { label: "MECCANICHE PRINCIPALI", value: "HERO DRAFT, GRIGLIA TATTICA, GESTIONE RISORSE (MANA), TIRI DI DADO (D6), SKIRMISH TATTICO, FANTASY, STRATEGICO COMPETITIVO", icon: Settings },
 ];
 
 export function ProductTabs() {
@@ -155,7 +152,7 @@ export function ProductTabs() {
                     </div>
                     <span className="text-xs uppercase tracking-widest text-muted-foreground">{label}</span>
                   </div>
-                  <p className="text-lg font-medium text-foreground/90" style={{ fontFamily: label === "Ideatore" || label === "Autori" ? "var(--font-display)" : "inherit" }}>
+                  <p className="text-lg font-medium text-foreground/90" style={{ fontFamily: label === "IDEATORE" || label === "AUTORI" ? "var(--font-display)" : "inherit" }}>
                     {value}
                   </p>
                 </div>

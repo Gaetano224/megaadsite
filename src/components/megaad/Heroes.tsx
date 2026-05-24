@@ -4,9 +4,9 @@ import ollerts from "@/assets/hero-ollerts.png";
 import herkaimer from "@/assets/hero-herkaimer.png";
 
 const heroes = [
-  { name: "Xelif", role: "Mago Pasticcere", img: xelif, desc: "Manipola il campo con portali dolciastri ed esplosioni zuccherine." },
-  { name: "Ollerts", role: "Assassino dell'Ombra", img: ollerts, desc: "Si muove fulmineo tra le ombre di Aethel colpendo alle spalle." },
-  { name: "Herkaimer", role: "Guerriero delle Rune", img: herkaimer, desc: "Incanala il potere delle antiche rune per erigere barriere impenetrabili." },
+  { name: "Xelif", role: "Mago Pasticcere", img: xelif },
+  { name: "Ollerts", role: "Assassino dell'Ombra", img: ollerts },
+  { name: "Herkaimer", role: "Guerriero delle Rune", img: herkaimer },
 ];
 
 export function Heroes() {
@@ -26,7 +26,7 @@ export function Heroes() {
               className="group relative overflow-hidden rounded-lg gold-frame bg-navy transition-all duration-500 hover:-translate-y-2 hover:border-gold hover:shadow-[0_0_40px_-5px_rgba(212,175,55,0.25)] flex flex-col"
             >
               {/* Image Viewport */}
-              <div className="aspect-[5/6] overflow-hidden relative">
+              <div className="aspect-[5/7] overflow-hidden relative">
                 {/* Spotlight Overlay */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_40%,_rgba(10,17,40,0.85)_100%)] z-10 pointer-events-none" />
                 <div className="absolute inset-0 bg-gold/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
@@ -40,23 +40,17 @@ export function Heroes() {
               </div>
               
               {/* Card Figcaption */}
-              <figcaption className="border-t border-gold/20 bg-navy-deep/90 px-6 py-5 text-center flex-grow flex flex-col justify-between">
-                <div>
-                  <div 
-                    className="text-2xl font-bold text-gold-soft tracking-wider group-hover:text-gold transition-colors duration-300" 
-                    style={{ fontFamily: "var(--font-display)" }}
-                  >
-                    {h.name}
-                  </div>
-                  
-                  <div className="text-[10px] uppercase tracking-[0.25em] text-gold/60 mt-1 font-semibold">
-                    {h.role}
-                  </div>
+              <figcaption className="border-t border-gold/20 bg-navy-deep/90 px-6 py-4 text-center">
+                <div 
+                  className="text-2xl font-bold text-gold-soft tracking-wider group-hover:text-gold transition-colors duration-300" 
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  {h.name}
                 </div>
-
-                <p className="text-xs text-muted-foreground/90 leading-relaxed mt-3 border-t border-gold/10 pt-3 group-hover:text-foreground/90 transition-colors duration-300">
-                  {h.desc}
-                </p>
+                
+                <div className="text-[10px] uppercase tracking-[0.25em] text-gold/60 mt-1 font-semibold">
+                  {h.role}
+                </div>
               </figcaption>
             </figure>
           ))}

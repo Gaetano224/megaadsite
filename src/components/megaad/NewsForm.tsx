@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { Mail, Check, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { SectionTitle } from "./SectionTitle";
-import { submitInterest } from "@/lib/news-interest.functions";
 
 export function NewsForm() {
-  const submit = useServerFn(submitInterest);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [consent, setConsent] = useState(false);
@@ -16,17 +14,32 @@ export function NewsForm() {
     e.preventDefault();
     setStatus("loading");
     setErrorMsg(null);
+
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail) {
+      setStatus("error");
+      setErrorMsg("Inserisci un'email valida.");
+      return;
+    }
+
     try {
-      const res = await submit({ data: { name: name.trim(), email: email.trim(), consent } });
-      if (res.ok) {
-        setStatus("ok");
-        setName("");
-        setEmail("");
-        setConsent(false);
-      } else {
+      const { error } = await supabase.from("news_interest").insert({
+        name: name.trim() || null,
+        email: trimmedEmail,
+        consent,
+      });
+
+      if (error) {
+        console.error("[news_interest] insert error", error);
         setStatus("error");
-        setErrorMsg(res.error);
+        setErrorMsg("Impossibile salvare la richiesta. Riprova.");
+        return;
       }
+
+      setStatus("ok");
+      setName("");
+      setEmail("");
+      setConsent(false);
     } catch (err) {
       console.error(err);
       setStatus("error");

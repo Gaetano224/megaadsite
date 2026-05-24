@@ -37,6 +37,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+// Premium board game showcase inspired by Cranio Creations
 function Index() {
   return (
     <main className="min-h-screen">

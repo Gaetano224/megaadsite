@@ -15,6 +15,7 @@ const contentsList = [
 const specs = [
   { label: "IDEATORE", value: "G. MONGELLI", icon: User },
   { label: "AUTORI", value: "G. MONGELLI, A. MEI", icon: User },
+  { label: "ILLUSTRATORE", value: "A. MURTEZANI", icon: Palette },
   { label: "MECCANICHE PRINCIPALI", value: "HERO DRAFT, GRIGLIA TATTICA, GESTIONE RISORSE (MANA), TIRI DI DADO (D6), SKIRMISH TATTICO, FANTASY, STRATEGICO COMPETITIVO", icon: Settings },
 ];
 
@@ -152,7 +153,7 @@ export function ProductTabs() {
                     </div>
                     <span className="text-xs uppercase tracking-widest text-muted-foreground">{label}</span>
                   </div>
-                  <p className="text-lg font-medium text-foreground/90" style={{ fontFamily: label === "IDEATORE" || label === "AUTORI" ? "var(--font-display)" : "inherit" }}>
+                  <p className="text-lg font-medium text-foreground/90" style={{ fontFamily: label === "IDEATORE" || label === "AUTORI" || label === "ILLUSTRATORE" ? "var(--font-display)" : "inherit" }}>
                     {value}
                   </p>
                 </div>
@@ -175,7 +176,7 @@ export function ProductTabs() {
               <div className="p-5 rounded-md bg-navy-deep/40 border border-gold/10 space-y-3">
                 <h4 className="text-lg uppercase tracking-widest text-gold-soft font-semibold">1. Fase di Preparazione (Draft & Mappa)</h4>
                 <p className="text-sm text-foreground/85 leading-relaxed">
-                  I giocatori scelgono i propri Eroi tramite un sistema di draft. Viene quindi pescata una <strong>Carta Mappa</strong> che definisce le zone di schieramento e la presenza di ostacoli 3D sulla griglia 8×10. Questo assicura che ogni partita offra uno scenario strategico completamente inedito.
+                  I giocatori scelgono i propri Eroi tramite un sistema di draft. Viene quindi pescata una <strong>Carta Mappa</strong> che definisce le zone di schieramento e la presenza di ostacoli sulla griglia 8×10. Questo assicura che ogni partita offra uno scenario strategico completamente inedito.
                 </p>
               </div>
 

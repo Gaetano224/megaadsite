@@ -4,9 +4,9 @@ import ollerts from "@/assets/hero-ollerts.png";
 import herkaimer from "@/assets/hero-herkaimer.png";
 
 const heroes = [
-  { name: "Xelif", role: "Mago Pasticcere", img: xelif },
-  { name: "Ollerts", role: "Assassino dell'Ombra", img: ollerts },
-  { name: "Herkaimer", role: "Guerriero delle Rune", img: herkaimer },
+  { name: "Xelif",img: xelif },
+  { name: "Ollerts",img: ollerts },
+  { name: "Herkaimer", img: herkaimer },
 ];
 
 export function Heroes() {

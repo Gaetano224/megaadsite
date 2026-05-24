@@ -4,43 +4,59 @@ import ollerts from "@/assets/hero-ollerts.png";
 import herkaimer from "@/assets/hero-herkaimer.png";
 
 const heroes = [
-  { name: "Xelif", role: "Mago Pasticcere", img: xelif },
-  { name: "Ollerts", role: "Assassino dell'Ombra", img: ollerts },
-  { name: "Herkaimer", role: "Guerriero delle Rune", img: herkaimer },
+  { name: "Xelif", role: "Mago Pasticcere", img: xelif, desc: "Manipola il campo con portali dolciastri ed esplosioni zuccherine." },
+  { name: "Ollerts", role: "Assassino dell'Ombra", img: ollerts, desc: "Si muove fulmineo tra le ombre di Aethel colpendo alle spalle." },
+  { name: "Herkaimer", role: "Guerriero delle Rune", img: herkaimer, desc: "Incanala il potere delle antiche rune per erigere barriere impenetrabili." },
 ];
 
 export function Heroes() {
   return (
-    <section className="px-6 py-24 md:py-32">
+    <section className="px-6 py-20 md:py-28 bg-gradient-to-b from-transparent to-navy/10">
       <div className="mx-auto max-w-6xl">
-        <SectionTitle eyebrow="Eroi" title="Conosci gli sfidanti" />
+        <SectionTitle eyebrow="Il Roster" title="Conosci gli sfidanti" />
 
-        <p className="mx-auto mb-12 max-w-2xl text-center text-foreground/80">
-          Ogni eroe ha statistiche, attacco base e abilità speciale uniche.
-          Ecco solo un assaggio del roster &mdash; il resto lo scoprirai nella scatola.
+        <p className="mx-auto mb-16 max-w-2xl text-center text-foreground/80 text-base md:text-lg">
+          Ogni eroe possiede statistiche uniche, un attacco base caratteristico e una devastante abilità speciale. Scegli saggiamente chi schierare.
         </p>
 
         <div className="grid gap-8 md:grid-cols-3">
           {heroes.map((h) => (
             <figure
               key={h.name}
-              className="group relative overflow-hidden rounded-lg gold-frame bg-navy transition-transform duration-500 hover:-translate-y-2"
+              className="group relative overflow-hidden rounded-lg gold-frame bg-navy transition-all duration-500 hover:-translate-y-2 hover:border-gold hover:shadow-[0_0_40px_-5px_rgba(212,175,55,0.25)] flex flex-col"
             >
-              <div className="aspect-[5/7] overflow-hidden">
+              {/* Image Viewport */}
+              <div className="aspect-[5/6] overflow-hidden relative">
+                {/* Spotlight Overlay */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_40%,_rgba(10,17,40,0.85)_100%)] z-10 pointer-events-none" />
+                <div className="absolute inset-0 bg-gold/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
+                
                 <img
                   src={h.img}
                   alt={`Carta eroe ${h.name}`}
                   loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                 />
               </div>
-              <figcaption className="border-t border-gold/30 bg-navy-deep/80 px-5 py-4 text-center">
-                <div className="text-lg font-semibold text-gold-soft tracking-widest" style={{ fontFamily: "var(--font-display)" }}>
-                  {h.name}
+              
+              {/* Card Figcaption */}
+              <figcaption className="border-t border-gold/20 bg-navy-deep/90 px-6 py-5 text-center flex-grow flex flex-col justify-between">
+                <div>
+                  <div 
+                    className="text-2xl font-bold text-gold-soft tracking-wider group-hover:text-gold transition-colors duration-300" 
+                    style={{ fontFamily: "var(--font-display)" }}
+                  >
+                    {h.name}
+                  </div>
+                  
+                  <div className="text-[10px] uppercase tracking-[0.25em] text-gold/60 mt-1 font-semibold">
+                    {h.role}
+                  </div>
                 </div>
-                <div className="text-xs uppercase tracking-[0.25em] text-muted-foreground mt-1">
-                  {h.role}
-                </div>
+
+                <p className="text-xs text-muted-foreground/90 leading-relaxed mt-3 border-t border-gold/10 pt-3 group-hover:text-foreground/90 transition-colors duration-300">
+                  {h.desc}
+                </p>
               </figcaption>
             </figure>
           ))}

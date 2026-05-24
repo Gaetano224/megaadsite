@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Mail, Check, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { db } from "@/integrations/firebase/client";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { SectionTitle } from "./SectionTitle";
 
 export function NewsForm() {
@@ -23,23 +24,12 @@ export function NewsForm() {
     }
 
     try {
-      const { error } = await supabase.from("news_interest").insert({
+      await addDoc(collection(db, "news_interest"), {
         name: name.trim() || null,
         email: trimmedEmail,
         consent,
+        created_at: serverTimestamp(),
       });
-
-      if (error) {
-        console.error("[news_interest] insert error", error);
-        const isNetworkIssue = /failed to fetch|network/i.test(error.message ?? "");
-        setStatus("error");
-        setErrorMsg(
-          isNetworkIssue
-            ? "Problema di connessione al servizio newsletter. Controlla la tua connessione e riprova."
-            : "Non siamo riusciti a salvare la tua richiesta. Riprova tra qualche minuto.",
-        );
-        return;
-      }
 
       setStatus("ok");
       setName("");
@@ -47,12 +37,22 @@ export function NewsForm() {
       setConsent(false);
     } catch (err) {
       console.error("[newsletter] submit failed", err);
+      const errMsg = err instanceof Error ? err.message : "";
+      const isNetworkIssue = /failed to fetch|network|offline/i.test(errMsg);
+      const isPermissionIssue = /permission-denied|missing-permission/i.test(errMsg);
+      
       setStatus("error");
-      setErrorMsg(
-        err instanceof Error && /failed to fetch|network/i.test(err.message)
-          ? "Problema di connessione al servizio newsletter. Controlla la tua connessione e riprova."
-          : "Qualcosa è andato storto. Riprova tra poco.",
-      );
+      if (isPermissionIssue) {
+        setErrorMsg(
+          "Errore di autorizzazione (Permission Denied). Assicurati che le regole di sicurezza di Firestore permettano la scrittura pubblica sulla collection 'news_interest'."
+        );
+      } else if (isNetworkIssue) {
+        setErrorMsg(
+          "Problema di connessione al servizio newsletter. Controlla la tua connessione e riprova."
+        );
+      } else {
+        setErrorMsg("Qualcosa è andato storto. Riprova tra poco.");
+      }
     }
   }
 

@@ -17,7 +17,6 @@ export function SiteFooter() {
           </a>
         </div>
         <div className="text-xs text-muted-foreground">
-          Ill. Murtezani Azret &middot; © {new Date().getFullYear()} Megaad. Tutti i diritti riservati.
         </div>
       </div>
     </footer>

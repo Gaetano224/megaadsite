@@ -3,20 +3,20 @@ import { BookOpen, Layers, ClipboardList, Shield, User, Landmark, Palette, Setti
 import boxImg from "@/assets/megaad-box.png";
 
 const contentsList = [
-  "1 Plancia di gioco telata (griglia tattica 8×10 caselle)",
-  "30 Carte Eroe dettagliate (6 per ciascuna classe)",
-  "30 Tasselli Eroe in cartone pressato ad alto spessore",
-  "6 Carte Mappa speciali per la generazione del terreno",
-  "10 Segnalini Ostacolo 3D in cartone sagomato",
+  "1 Plancia di gioco",
+  "30 Carte Eroe",
+  "30 Tasselli Eroe",
+  "6 Carte Mappa",
+  "8 Segnalini Ostacolo",
   "2 Block notes segnapunti per la gestione del Mana",
-  "2 Dadi D6 da combattimento personalizzati",
+  "2 Dadi D6 da combattimento",
 ];
 
 const specs = [
   { label: "IDEATORE", value: "G. MONGELLI", icon: User },
   { label: "AUTORI", value: "G. MONGELLI, A. MEI", icon: User },
   { label: "ILLUSTRATORE", value: "A. MURTEZANI", icon: Palette },
-  { label: "MECCANICHE PRINCIPALI", value: "HERO DRAFT, GRIGLIA TATTICA, GESTIONE RISORSE (MANA), TIRI DI DADO (D6), SKIRMISH TATTICO, FANTASY, STRATEGICO COMPETITIVO", icon: Settings },
+  { label: "MECCANICHE PRINCIPALI", value: "HERO DRAFT, GESTIONE RISORSE (MANA), TIRI DI DADO (D6), SKIRMISH TATTICO, FANTASY, STRATEGICO COMPETITIVO", icon: Settings },
 ];
 
 export function ProductTabs() {
@@ -86,15 +86,15 @@ export function ProductTabs() {
         {activeTab === "desc" && (
           <div className="animate-fade-in space-y-6">
             <h3 className="text-3xl text-gold mb-2 font-semibold" style={{ fontFamily: "var(--font-display)" }}>
-              Il Regno di Aethel ti attende
+              Il Regno di Megaad ti attende
             </h3>
             <div className="grid gap-8 md:grid-cols-12 items-center">
               <div className="md:col-span-7 space-y-4">
                 <p className="text-lg leading-relaxed text-foreground/90 font-serif">
-                  Il nome <strong className="text-gold-soft">Megaad</strong> trae le sue radici da una profonda fusione intellettuale: <em className="text-gold-soft italic">Metis</em> (la scaltrezza strategica e l'ingegno pratico degli antichi greci) e <em className="text-gold-soft">Jugaad</em> (l'arte di trovare soluzioni geniali sfruttando al massimo risorse limitate).
+                  Il nome <strong className="text-gold-soft">Megaad</strong> trae le sue radici da una fusione di due termini: <em className="text-gold-soft italic">Metis</em> (la scaltrezza strategica e l'ingegno pratico degli antichi greci) e <em className="text-gold-soft">Jugaad</em> (l'arte di trovare soluzioni geniali sfruttando al massimo risorse limitate).
                 </p>
                 <p className="text-base text-foreground/80 leading-relaxed">
-                  In Megaad, non vincerai mai affidandoti solo alla fortuna. Su una griglia in continua evoluzione flagellata da ostacoli e terreni mutevoli, sarai chiamato a condurre una squadra di campioni unici, ciascuno dotato di abilità asimmetriche. La tua mente è la tua risorsa più preziosa: pianifica con cura, gestisci le riserve di Mana e sconfiggi gli avversari un passo alla volta.
+                  In Megaad, non vincerai mai affidandoti solo alla fortuna. Su una griglia che cambierà di partita in partita, sarai chiamato a condurre una squadra di campioni unici, ciascuno dotato di abilità diverse tra loro. La tua mente è la tua risorsa più preziosa: pianifica con cura, gestisci il Mana e sconfiggi gli avversari un passo alla volta.
                 </p>
               </div>
               <div className="md:col-span-5 border-l-2 border-gold/40 pl-6 py-2">
@@ -183,7 +183,7 @@ export function ProductTabs() {
               <div className="p-5 rounded-md bg-navy-deep/40 border border-gold/10 space-y-3">
                 <h4 className="text-lg uppercase tracking-widest text-gold-soft font-semibold">2. Flusso del Turno & Gestione Mana</h4>
                 <p className="text-sm text-foreground/85 leading-relaxed">
-                  Ogni Eroe ha a disposizione una determinata riserva di <strong>Punti Mana</strong> per turno. Il Mana viene speso per compiere azioni: Movimento (ortogonale o diagonale in base alle caselle), Attacchi Base o attivazione di potenti Abilità Speciali asimmetriche.
+                  Ogni Giocatore ha a disposizione una determinata riserva di <strong>Punti Mana</strong> per turno. Il Mana viene speso per compiere azioni: Movimento, Attacchi Base o attivazione di Abilità Speciali.
                 </p>
               </div>
 

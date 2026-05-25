@@ -31,7 +31,7 @@ Sito vetrina in italiano per presentare il gioco da tavolo Megaad in arrivo, con
 
 5. **Contenuto della scatola**
    - Immagine della scatola Megaad a sinistra.
-   - Lista a destra: 1 Plancia 8×10, 30 Carte Eroe (6 per classe), 30 Tasselli Eroe, 6 Carte Mappa, 10 Segnalini Ostacolo, 2 Block notes, 2 D6.
+   - Lista a destra: 1 Plancia 8×10, 30 Carte Eroe, 30 Tasselli Eroe, 6 Carte Mappa, 8 Segnalini Ostacolo, 2 Block notes, 2 D6.
 
 6. **Form interesse (sezione finale + ancora #news)**
    - Campi: Nome (opzionale), Email (obbligatoria), checkbox consenso.

@@ -6,10 +6,7 @@ import ollerts from "@/assets/hero-ollerts.png";
 import herkaimer from "@/assets/hero-herkaimer.png";
 
 const images = [
-  { id: "box", url: boxImg, alt: "Scatola di gioco Megaad" },
-  { id: "xelif", url: xelif, alt: "Carta Eroe Xelif" },
-  { id: "ollerts", url: ollerts, alt: "Carta Eroe Ollerts" },
-  { id: "herkaimer", url: herkaimer, alt: "Carta Eroe Herkaimer" },
+  { id: "box", url: boxImg, alt: "Scatola di gioco Megaad" }
 ];
 
 export function Hero() {

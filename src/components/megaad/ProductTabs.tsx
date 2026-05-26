@@ -91,7 +91,7 @@ export function ProductTabs() {
             <div className="grid gap-8 md:grid-cols-12 items-center">
               <div className="md:col-span-7 space-y-4">
                 <p className="text-lg leading-relaxed text-foreground/90 font-serif">
-                  Il nome <strong className="text-gold-soft">Megaad</strong> trae le sue radici da una fusione di due termini: <em className="text-gold-soft italic">Metis</em> (termine derivante dal greco che indica la scaltrezza strategica e l'ingegno pratico) e <em className="text-gold-soft">Jugaad</em> (termine derivanete dall'indiano che indica l'arte di trovare soluzioni geniali sfruttando al massimo risorse limitate).
+                  Il nome <strong className="text-gold-soft">Megaad</strong> trae le sue radici da una fusione di due termini: <em className="text-gold-soft italic">Metis</em> (termine derivante dal greco che indica la scaltrezza strategica e l'ingegno pratico) e <em className="text-gold-soft">Jugaad</em> (termine derivante dall'indiano che indica l'arte di trovare soluzioni geniali sfruttando al massimo risorse limitate).
                 </p>
                 <p className="text-base text-foreground/80 leading-relaxed">
                   In Megaad, non vincerai mai affidandoti solo alla fortuna. Su una griglia che cambierà di partita in partita, sarai chiamato a condurre una squadra di campioni unici, ciascuno dotato di abilità diverse tra loro. La tua mente è la tua risorsa più preziosa: pianifica con cura, gestisci il Mana e sconfiggi gli avversari un passo alla volta.

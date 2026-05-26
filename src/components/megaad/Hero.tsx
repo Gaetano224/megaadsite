@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Users, Clock, Sparkles, Languages, Mail, ChevronRight } from "lucide-react";
-import boxImg from "@/assets/megaad-box.png";
+import boxImg from "@/assets/megaad-box-new.png";
 import xelif from "@/assets/hero-xelif.png";
 import ollerts from "@/assets/hero-ollerts.png";
 import herkaimer from "@/assets/hero-herkaimer.png";
@@ -39,26 +39,7 @@ export function Hero() {
               />
             </div>
             
-            {/* Thumbnails */}
-            <div className="grid grid-cols-4 gap-3">
-              {images.map((img) => (
-                <button
-                  key={img.id}
-                  onClick={() => setActiveImg(img)}
-                  className={`relative gold-frame rounded overflow-hidden aspect-square bg-navy-deep p-1 transition-all duration-300 ${
-                    activeImg.id === img.id
-                      ? "ring-2 ring-gold border-transparent scale-[1.05]"
-                      : "opacity-60 hover:opacity-100 hover:scale-[1.02]"
-                  }`}
-                >
-                  <img
-                    src={img.url}
-                    alt={img.alt}
-                    className="w-full h-full object-contain"
-                  />
-                </button>
-              ))}
-            </div>
+
           </div>
 
           {/* RIGHT: Product Description, Specs & CTAs */}

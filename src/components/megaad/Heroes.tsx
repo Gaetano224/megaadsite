@@ -16,7 +16,7 @@ export function Heroes() {
         <SectionTitle eyebrow="Il Roster" title="Conosci alcuni degli eroi" />
 
         <p className="mx-auto mb-16 max-w-2xl text-center text-foreground/80 text-base md:text-lg">
-          Ogni eroe possiede statistiche uniche, un attacco base caratteristico e una devastante abilità speciale. Scegli saggiamente chi schierare. /n Potrai conoscerne tanti altri entrando nel fantastico mondo di Megaad
+          Ogni eroe possiede statistiche uniche, un attacco base caratteristico e una devastante abilità speciale. Scegli saggiamente chi schierare. Potrai conoscerne tanti altri entrando nel fantastico mondo di Megaad
         </p>
 
         <div className="grid gap-8 md:grid-cols-3">

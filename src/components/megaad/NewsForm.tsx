@@ -63,7 +63,7 @@ export function NewsForm() {
 
         <p className="mb-8 text-center text-foreground/85">
           Lasciaci la tua email: ti scriveremo solo per annunci importanti
-          sull'uscita di Megaad. &mdash;
+          sull'uscita di Megaad.
         </p>
 
         <div className="gold-frame rounded-lg bg-navy/70 p-8 backdrop-blur-sm">

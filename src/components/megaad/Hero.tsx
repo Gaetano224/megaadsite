@@ -26,7 +26,7 @@ export function Hero() {
           {/* LEFT: Premium Product Gallery */}
           <div className="md:col-span-5 flex flex-col gap-4">
             {/* Viewport */}
-            <div className="relative gold-frame rounded-lg overflow-hidden bg-navy-deep aspect-[4/5] shadow-2xl flex items-center justify-center p-4">
+            <div className="relative aspect-[4/5] flex items-center justify-center">
               {/* Product Badge */}
               <div className="absolute top-4 left-4 z-10 bg-gold px-3 py-1.5 rounded text-[10px] uppercase font-bold tracking-widest text-primary-foreground shadow-md">
                 Prossima Uscita
@@ -99,14 +99,6 @@ export function Hero() {
               >
                 <Mail className="h-4 w-4" />
                 Iscriviti alle News
-              </a>
-              
-              <a
-                href="#details-hub"
-                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-md border border-gold/50 bg-navy/40 px-6 py-4 text-sm font-semibold uppercase tracking-widest text-gold-soft transition hover:bg-gold/10 hover:text-gold"
-              >
-                Leggi Compendio
-                <ChevronRight className="h-4 w-4" />
               </a>
             </div>
 

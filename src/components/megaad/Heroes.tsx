@@ -13,10 +13,10 @@ export function Heroes() {
   return (
     <section className="px-6 py-20 md:py-28 bg-gradient-to-b from-transparent to-navy/10">
       <div className="mx-auto max-w-6xl">
-        <SectionTitle eyebrow="Il Roster" title="Conosci gli sfidanti" />
+        <SectionTitle eyebrow="Il Roster" title="Conosci alcuni degli eroi" />
 
         <p className="mx-auto mb-16 max-w-2xl text-center text-foreground/80 text-base md:text-lg">
-          Ogni eroe possiede statistiche uniche, un attacco base caratteristico e una devastante abilità speciale. Scegli saggiamente chi schierare.
+          Ogni eroe possiede statistiche uniche, un attacco base caratteristico e una devastante abilità speciale. Scegli saggiamente chi schierare. /n Potrai conoscerne tanti altri entrando nel fantastico mondo di Megaad
         </p>
 
         <div className="grid gap-8 md:grid-cols-3">

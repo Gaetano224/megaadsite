@@ -4,6 +4,7 @@ import { Search, X } from "lucide-react";
 import { SectionTitle } from "@/components/megaad/SectionTitle";
 import { SiteFooter } from "@/components/megaad/SiteFooter";
 import { AbilityFAQModal } from "@/components/megaad/AbilityFAQModal";
+import { AbilitaForum } from "@/components/megaad/AbilitaForum";
 
 const heroes = [
   { id: "ryker", name: "Ryker" },
@@ -174,6 +175,8 @@ function AbilitaEroi() {
           )}
         </div>
       </section>
+
+      <AbilitaForum />
 
       <SiteFooter />
     </main>

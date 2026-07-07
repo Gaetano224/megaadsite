@@ -18,13 +18,15 @@ const heroData: Record<string, HeroAbility> = {
     name: "Ryker",
     images: ["/abilit/ryker.png"],
     description:
-      "Ryker è in range quindi può colpire in maniera diretta Agri, tira il dado, se supera l'agilità di Agri (3) infliggi danno ad Agri e il colpo rimbalza"+
-      "In questo caso il colpo rimbalza su Karka e Portium, il giocatore dovrà tirare il dado prima per uno e poi per l'altro per vedere chi viene colpito",
+      "Ryker è in range quindi può colpire in maniera diretta Agri, tira il dado, se supera l'agilità di Agri (3) infliggi 5 danni ad Agri e il colpo rimbalza"+
+      "In questo caso il colpo rimbalza su Karka e Portium, il giocatore dovrà tirare il dado prima per uno e poi per l'altro per vedere se anche loro subiranno danni, in questo caso 3.",
   },
   montwel: {
     name: "Montwel",
     images: ["/abilit/montwel1.png", "/abilit/montwel2.png"],
-    description: "Inserisci qui la descrizione delle abilità di Montwel.",
+    description: "Montwel può decidere se attaccare a distanza o ravvicinato, ovviamente vale la regola generale che se si trova un nemico" +
+    "davanti dovrà necessariamente essere colpito lui. Se Montwel decide di attaccare a distanza puòp attacare fino a range 4 in tal caso se l'attacco"+
+    "va a buon fine l'avversario subirà 3 danni e sarà immobilizzato per un turno. Se Montwel decide di attaccare un bersaglio adiacente infliggerà 6 danni senza immbolizzare.",
   },
   gostrel: {
     name: "Gostrel",

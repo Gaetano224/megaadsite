@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AbilitaEroiIndexRouteImport } from './routes/abilita-eroi/index'
+import { Route as AbilitaEroiHeroIdRouteImport } from './routes/abilita-eroi/$heroId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AbilitaEroiIndexRoute = AbilitaEroiIndexRouteImport.update({
+  id: '/abilita-eroi/',
+  path: '/abilita-eroi/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AbilitaEroiHeroIdRoute = AbilitaEroiHeroIdRouteImport.update({
+  id: '/abilita-eroi/$heroId',
+  path: '/abilita-eroi/$heroId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/abilita-eroi/$heroId': typeof AbilitaEroiHeroIdRoute
+  '/abilita-eroi/': typeof AbilitaEroiIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/abilita-eroi/$heroId': typeof AbilitaEroiHeroIdRoute
+  '/abilita-eroi': typeof AbilitaEroiIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/abilita-eroi/$heroId': typeof AbilitaEroiHeroIdRoute
+  '/abilita-eroi/': typeof AbilitaEroiIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/abilita-eroi/$heroId' | '/abilita-eroi/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/abilita-eroi/$heroId' | '/abilita-eroi'
+  id: '__root__' | '/' | '/abilita-eroi/$heroId' | '/abilita-eroi/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AbilitaEroiHeroIdRoute: typeof AbilitaEroiHeroIdRoute
+  AbilitaEroiIndexRoute: typeof AbilitaEroiIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/abilita-eroi/': {
+      id: '/abilita-eroi/'
+      path: '/abilita-eroi'
+      fullPath: '/abilita-eroi/'
+      preLoaderRoute: typeof AbilitaEroiIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/abilita-eroi/$heroId': {
+      id: '/abilita-eroi/$heroId'
+      path: '/abilita-eroi/$heroId'
+      fullPath: '/abilita-eroi/$heroId'
+      preLoaderRoute: typeof AbilitaEroiHeroIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AbilitaEroiHeroIdRoute: AbilitaEroiHeroIdRoute,
+  AbilitaEroiIndexRoute: AbilitaEroiIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

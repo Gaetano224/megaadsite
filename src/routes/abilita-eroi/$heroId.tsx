@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteFooter } from "@/components/megaad/SiteFooter";
+import { AbilityFAQModal } from "@/components/megaad/AbilityFAQModal";
 
 // ─── Hero Data ─────────────────────────────────────────────
 // Ogni eroe ha: nome, immagine(i), e testo descrizione abilità.
@@ -66,6 +67,11 @@ const heroData: Record<string, HeroAbility> = {
     images: ["/abilit/ollerts.png"],
     description: "Inserisci qui la descrizione delle abilità di Ollerts.",
   },
+  grorn: {
+    name: "Grorn",
+    images: [],
+    description: "Inserisci qui la descrizione delle abilità di Grorn.",
+  },
 };
 
 export const Route = createFileRoute("/abilita-eroi/$heroId")({
@@ -123,7 +129,7 @@ function HeroAbilityPage() {
     <main className="min-h-screen">
       {/* Navigation */}
       <div className="px-6 pt-8 pb-4">
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-5xl flex items-center justify-between gap-4">
           <Link
             to="/abilita-eroi"
             className="inline-flex items-center gap-2 text-sm text-gold/70 hover:text-gold transition-colors duration-300 group"
@@ -145,6 +151,8 @@ function HeroAbilityPage() {
             </svg>
             <span style={{ fontFamily: "var(--font-display)" }}>Torna alla lista eroi</span>
           </Link>
+
+          <AbilityFAQModal variant="button" />
         </div>
       </div>
 

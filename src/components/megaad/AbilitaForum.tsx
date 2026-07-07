@@ -1,6 +1,16 @@
 import { useState, useEffect } from "react";
 import { MessageSquare, ThumbsUp, Send, Search, Plus, X, Calendar, User, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "sonner";
+import { db } from "@/integrations/firebase/client";
+import {
+  collection,
+  addDoc,
+  onSnapshot,
+  query,
+  orderBy,
+  doc,
+  runTransaction
+} from "firebase/firestore";
 
 interface ForumReply {
   id: string;
@@ -37,85 +47,41 @@ const heroesList = [
   { id: "grorn", name: "Grorn" },
 ];
 
-const SEED_QUESTIONS: ForumQuestion[] = [
-  {
-    id: "q-1",
-    author: "Gamer99",
-    heroId: "ryker",
-    content: "Se il colpo di Ryker rimbalza su Karka e Portium, posso attivare altre abilità durante i tiri di rimbalzo?",
-    createdAt: "2026-07-01T14:30:00Z",
-    likes: 5,
-    likedBy: [],
-    replies: [
-      {
-        id: "r-1",
-        author: "MegaMaster",
-        content: "No, la risoluzione dell'abilità di Ryker deve essere completata interamente prima che qualsiasi altra azione o abilità possa essere giocata. Quindi risolvi prima tutti i rimbalzi!",
-        createdAt: "2026-07-01T15:12:00Z",
-        likes: 3,
-        likedBy: []
-      }
-    ]
-  },
-  {
-    id: "q-2",
-    author: "Elena_V",
-    heroId: "montwel",
-    content: "Montwel può colpire a range 4 anche se c'è un ostacolo di linea di vista (come una roccia)?",
-    createdAt: "2026-07-03T10:15:00Z",
-    likes: 8,
-    likedBy: [],
-    replies: [
-      {
-        id: "r-2",
-        author: "Staff_Megaad",
-        content: "No, gli attacchi a distanza seguono la regola generale della Linea di Vista (LoS). Se c'è un ostacolo totale non puoi colpire. Vedi la sezione 2 del Compendio per i dettagli sulla visibilità.",
-        createdAt: "2026-07-03T11:45:00Z",
-        likes: 6,
-        likedBy: []
-      }
-    ]
-  },
-  {
-    id: "q-3",
-    author: "Luca_G",
-    heroId: "general",
-    content: "Qual è la differenza principale tra un'abilità attiva e una passiva nel turno?",
-    createdAt: "2026-07-05T09:00:00Z",
-    likes: 12,
-    likedBy: [],
-    replies: [
-      {
-        id: "r-3",
-        author: "Chronos",
-        content: "Le abilità attive costano punti mana o punti azione e vanno dichiarate ed eseguite nel proprio turno. Le passive invece sono costantemente attive oppure si attivano automaticamente non appena si verifica la condizione indicata.",
-        createdAt: "2026-07-05T09:30:00Z",
-        likes: 9,
-        likedBy: []
-      }
-    ]
-  }
-];
-
 export function AbilitaForum() {
-  const [questions, setQuestions] = useState<ForumQuestion[]>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("megaad_abilities_forum");
-      if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch (e) {
-          console.error("Failed to parse saved forum questions", e);
-        }
-      }
-    }
-    return SEED_QUESTIONS;
-  });
+  const [questions, setQuestions] = useState<ForumQuestion[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Sync to local storage
+  // Sync with Firestore
   useEffect(() => {
-    localStorage.setItem("megaad_abilities_forum", JSON.stringify(questions));
-  }, [questions]);
+    const q = query(collection(db, "forum_questions"), orderBy("createdAt", "desc"));
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        const fetchedQuestions = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            author: data.author || "",
+            heroId: data.heroId || "",
+            content: data.content || "",
+            createdAt: data.createdAt || new Date().toISOString(),
+            likes: data.likes || 0,
+            likedBy: data.likedBy || [],
+            replies: data.replies || [],
+          } as ForumQuestion;
+        });
+        setQuestions(fetchedQuestions);
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Failed to fetch forum questions from firestore", error);
+        toast.error("Errore nel caricamento delle domande del forum.");
+        setLoading(false);
+      }
+    );
+
+    return () => unsubscribe();
+  }, []);
 
   // Filtering states
   const [selectedHeroFilter, setSelectedHeroFilter] = useState("all");
@@ -133,11 +99,7 @@ export function AbilitaForum() {
   const [newReplyContent, setNewReplyContent] = useState("");
 
   // Expanded replies states (keyed by question ID)
-  const [expandedRepliesIds, setExpandedRepliesIds] = useState<Record<string, boolean>>({
-    "q-1": true,
-    "q-2": true,
-    "q-3": true,
-  });
+  const [expandedRepliesIds, setExpandedRepliesIds] = useState<Record<string, boolean>>({});
 
   // Format date helper
   const formatDate = (dateString: string) => {
@@ -152,51 +114,67 @@ export function AbilitaForum() {
   };
 
   // Like Question
-  const handleLikeQuestion = (qId: string) => {
-    setQuestions((prev) =>
-      prev.map((q) => {
-        if (q.id === qId) {
-          const hasLiked = q.likedBy.includes("user");
-          const updatedLikedBy = hasLiked
-            ? q.likedBy.filter((u) => u !== "user")
-            : [...q.likedBy, "user"];
-          return {
-            ...q,
-            likes: q.likes + (hasLiked ? -1 : 1),
-            likedBy: updatedLikedBy,
-          };
+  const handleLikeQuestion = async (qId: string) => {
+    try {
+      const questionRef = doc(db, "forum_questions", qId);
+      await runTransaction(db, async (transaction) => {
+        const sfDoc = await transaction.get(questionRef);
+        if (!sfDoc.exists()) {
+          throw new Error("Documento non trovato!");
         }
-        return q;
-      })
-    );
+        const data = sfDoc.data();
+        const likedBy = data.likedBy || [];
+        const hasLiked = likedBy.includes("user");
+        const updatedLikedBy = hasLiked
+          ? likedBy.filter((u: string) => u !== "user")
+          : [...likedBy, "user"];
+        const newLikesCount = (data.likes || 0) + (hasLiked ? -1 : 1);
+        transaction.update(questionRef, {
+          likes: newLikesCount,
+          likedBy: updatedLikedBy,
+        });
+      });
+    } catch (error) {
+      console.error("Error liking question:", error);
+      toast.error("Impossibile mettere mi piace. Riprova.");
+    }
   };
 
   // Like Reply
-  const handleLikeReply = (qId: string, rId: string) => {
-    setQuestions((prev) =>
-      prev.map((q) => {
-        if (q.id === qId) {
-          return {
-            ...q,
-            replies: q.replies.map((r) => {
-              if (r.id === rId) {
-                const hasLiked = r.likedBy.includes("user");
-                const updatedLikedBy = hasLiked
-                  ? r.likedBy.filter((u) => u !== "user")
-                  : [...r.likedBy, "user"];
-                return {
-                  ...r,
-                  likes: r.likes + (hasLiked ? -1 : 1),
-                  likedBy: updatedLikedBy,
-                };
-              }
-              return r;
-            }),
-          };
+  const handleLikeReply = async (qId: string, rId: string) => {
+    try {
+      const questionRef = doc(db, "forum_questions", qId);
+      await runTransaction(db, async (transaction) => {
+        const sfDoc = await transaction.get(questionRef);
+        if (!sfDoc.exists()) {
+          throw new Error("Documento non trovato!");
         }
-        return q;
-      })
-    );
+        const data = sfDoc.data();
+        const replies = data.replies || [];
+        const updatedReplies = replies.map((r: any) => {
+          if (r.id === rId) {
+            const likedBy = r.likedBy || [];
+            const hasLiked = likedBy.includes("user");
+            const updatedLikedBy = hasLiked
+              ? likedBy.filter((u: string) => u !== "user")
+              : [...likedBy, "user"];
+            const newLikes = (r.likes || 0) + (hasLiked ? -1 : 1);
+            return {
+              ...r,
+              likes: newLikes,
+              likedBy: updatedLikedBy,
+            };
+          }
+          return r;
+        });
+        transaction.update(questionRef, {
+          replies: updatedReplies,
+        });
+      });
+    } catch (error) {
+      console.error("Error liking reply:", error);
+      toast.error("Impossibile mettere mi piace alla risposta. Riprova.");
+    }
   };
 
   // Toggle replies expanded state
@@ -208,34 +186,37 @@ export function AbilitaForum() {
   };
 
   // Submit Question
-  const handleSubmitQuestion = (e: React.FormEvent) => {
+  const handleSubmitQuestion = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newQuestionName.trim() || !newQuestionContent.trim()) {
       toast.error("Per favore, compila tutti i campi obbligatori.");
       return;
     }
 
-    const newQuestion: ForumQuestion = {
-      id: `q-${Date.now()}`,
-      author: newQuestionName.trim(),
-      heroId: newQuestionHero,
-      content: newQuestionContent.trim(),
-      createdAt: new Date().toISOString(),
-      likes: 0,
-      likedBy: [],
-      replies: [],
-    };
+    try {
+      await addDoc(collection(db, "forum_questions"), {
+        author: newQuestionName.trim(),
+        heroId: newQuestionHero,
+        content: newQuestionContent.trim(),
+        createdAt: new Date().toISOString(),
+        likes: 0,
+        likedBy: [],
+        replies: [],
+      });
 
-    setQuestions((prev) => [newQuestion, ...prev]);
-    setNewQuestionName("");
-    setNewQuestionHero("general");
-    setNewQuestionContent("");
-    setShowAskForm(false);
-    toast.success("Domanda pubblicata con successo nel forum!");
+      setNewQuestionName("");
+      setNewQuestionHero("general");
+      setNewQuestionContent("");
+      setShowAskForm(false);
+      toast.success("Domanda pubblicata con successo nel forum!");
+    } catch (error) {
+      console.error("Error adding question:", error);
+      toast.error("Impossibile pubblicare la domanda. Riprova.");
+    }
   };
 
   // Submit Reply
-  const handleSubmitReply = (e: React.FormEvent, qId: string) => {
+  const handleSubmitReply = async (e: React.FormEvent, qId: string) => {
     e.preventDefault();
     if (!newReplyName.trim() || !newReplyContent.trim()) {
       toast.error("Per favore, compila tutti i campi.");
@@ -251,28 +232,34 @@ export function AbilitaForum() {
       likedBy: [],
     };
 
-    setQuestions((prev) =>
-      prev.map((q) => {
-        if (q.id === qId) {
-          return {
-            ...q,
-            replies: [...q.replies, newReply],
-          };
+    try {
+      const questionRef = doc(db, "forum_questions", qId);
+      await runTransaction(db, async (transaction) => {
+        const sfDoc = await transaction.get(questionRef);
+        if (!sfDoc.exists()) {
+          throw new Error("Documento non trovato!");
         }
-        return q;
-      })
-    );
+        const data = sfDoc.data();
+        const currentReplies = data.replies || [];
+        transaction.update(questionRef, {
+          replies: [...currentReplies, newReply]
+        });
+      });
 
-    // Expand replies automatically when a new one is added
-    setExpandedRepliesIds((prev) => ({
-      ...prev,
-      [qId]: true,
-    }));
+      // Expand replies automatically when a new one is added
+      setExpandedRepliesIds((prev) => ({
+        ...prev,
+        [qId]: true,
+      }));
 
-    setNewReplyName("");
-    setNewReplyContent("");
-    setShowReplyFormId(null);
-    toast.success("Risposta pubblicata con successo!");
+      setNewReplyName("");
+      setNewReplyContent("");
+      setShowReplyFormId(null);
+      toast.success("Risposta pubblicata con successo!");
+    } catch (error) {
+      console.error("Error adding reply:", error);
+      toast.error("Impossibile inviare la risposta. Riprova.");
+    }
   };
 
   // Filter questions
@@ -445,7 +432,14 @@ export function AbilitaForum() {
 
         {/* Questions List */}
         <div className="space-y-6">
-          {filteredQuestions.length > 0 ? (
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-gold border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" />
+              <p className="text-gold-soft mt-3 text-sm" style={{ fontFamily: "var(--font-display)" }}>
+                Caricamento discussioni...
+              </p>
+            </div>
+          ) : filteredQuestions.length > 0 ? (
             filteredQuestions.map((q) => {
               const heroObj = heroesList.find((h) => h.id === q.heroId);
               const isHeroGeneral = q.heroId === "general";

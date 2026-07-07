@@ -1,4 +1,5 @@
 import { SectionTitle } from "./SectionTitle";
+import { Link } from "@tanstack/react-router";
 import xelif from "@/assets/hero-xelif.png";
 import ollerts from "@/assets/hero-ollerts.png";
 import herkaimer from "@/assets/hero-herkaimer.png";
@@ -54,6 +55,16 @@ export function Heroes() {
               </figcaption>
             </figure>
           ))}
+        </div>
+        
+        <div className="mt-16 text-center">
+          <Link
+            to="/abilita-eroi"
+            className="inline-flex items-center gap-2 rounded-md bg-gold hover:bg-gold-soft px-8 py-4 text-sm font-semibold uppercase tracking-widest text-primary-foreground transition-all duration-300 hover:shadow-[0_0_35px_-5px_var(--gold)] cursor-pointer"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Scopri Tutte le Abilità degli Eroi
+          </Link>
         </div>
       </div>
     </section>

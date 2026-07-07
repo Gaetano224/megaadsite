@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { Users, Clock, Sparkles, Languages, Mail, ChevronRight } from "lucide-react";
 import boxImg from "@/assets/megaad-box-new.png";
 import xelif from "@/assets/hero-xelif.png";
@@ -81,6 +82,14 @@ export function Hero() {
                 <Mail className="h-4 w-4" />
                 Iscriviti alle News
               </a>
+              <Link
+                to="/abilita-eroi"
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-md border border-gold px-6 py-4 text-sm font-semibold uppercase tracking-widest text-gold hover:bg-gold/10 hover:text-gold-soft transition hover:shadow-[0_0_20px_-5px_rgba(212,175,55,0.3)]"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                <Sparkles className="h-4 w-4" />
+                Abilità Eroi
+              </Link>
             </div>
 
             <p className="mt-4 text-xs text-muted-foreground/80">

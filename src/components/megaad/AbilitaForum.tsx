@@ -1,16 +1,6 @@
 import { useState, useEffect } from "react";
 import { MessageSquare, ThumbsUp, Send, Search, Plus, X, Calendar, User, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "sonner";
-import { db } from "@/integrations/firebase/client";
-import {
-  collection,
-  addDoc,
-  onSnapshot,
-  query,
-  orderBy,
-  doc,
-  runTransaction
-} from "firebase/firestore";
 
 interface ForumReply {
   id: string;
@@ -48,40 +38,24 @@ const heroesList = [
 ];
 
 export function AbilitaForum() {
-  const [questions, setQuestions] = useState<ForumQuestion[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  // Sync with Firestore
-  useEffect(() => {
-    const q = query(collection(db, "forum_questions"), orderBy("createdAt", "desc"));
-    const unsubscribe = onSnapshot(
-      q,
-      (snapshot) => {
-        const fetchedQuestions = snapshot.docs.map((doc) => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            author: data.author || "",
-            heroId: data.heroId || "",
-            content: data.content || "",
-            createdAt: data.createdAt || new Date().toISOString(),
-            likes: data.likes || 0,
-            likedBy: data.likedBy || [],
-            replies: data.replies || [],
-          } as ForumQuestion;
-        });
-        setQuestions(fetchedQuestions);
-        setLoading(false);
-      },
-      (error) => {
-        console.error("Failed to fetch forum questions from firestore", error);
-        toast.error("Errore nel caricamento delle domande del forum.");
-        setLoading(false);
+  const [questions, setQuestions] = useState<ForumQuestion[]>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("megaad_abilities_forum");
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch (e) {
+          console.error("Failed to parse saved forum questions", e);
+        }
       }
-    );
+    }
+    return [];
+  });
 
-    return () => unsubscribe();
-  }, []);
+  // Sync to local storage
+  useEffect(() => {
+    localStorage.setItem("megaad_abilities_forum", JSON.stringify(questions));
+  }, [questions]);
 
   // Filtering states
   const [selectedHeroFilter, setSelectedHeroFilter] = useState("all");
@@ -114,67 +88,51 @@ export function AbilitaForum() {
   };
 
   // Like Question
-  const handleLikeQuestion = async (qId: string) => {
-    try {
-      const questionRef = doc(db, "forum_questions", qId);
-      await runTransaction(db, async (transaction) => {
-        const sfDoc = await transaction.get(questionRef);
-        if (!sfDoc.exists()) {
-          throw new Error("Documento non trovato!");
+  const handleLikeQuestion = (qId: string) => {
+    setQuestions((prev) =>
+      prev.map((q) => {
+        if (q.id === qId) {
+          const hasLiked = q.likedBy.includes("user");
+          const updatedLikedBy = hasLiked
+            ? q.likedBy.filter((u) => u !== "user")
+            : [...q.likedBy, "user"];
+          return {
+            ...q,
+            likes: q.likes + (hasLiked ? -1 : 1),
+            likedBy: updatedLikedBy,
+          };
         }
-        const data = sfDoc.data();
-        const likedBy = data.likedBy || [];
-        const hasLiked = likedBy.includes("user");
-        const updatedLikedBy = hasLiked
-          ? likedBy.filter((u: string) => u !== "user")
-          : [...likedBy, "user"];
-        const newLikesCount = (data.likes || 0) + (hasLiked ? -1 : 1);
-        transaction.update(questionRef, {
-          likes: newLikesCount,
-          likedBy: updatedLikedBy,
-        });
-      });
-    } catch (error) {
-      console.error("Error liking question:", error);
-      toast.error("Impossibile mettere mi piace. Riprova.");
-    }
+        return q;
+      })
+    );
   };
 
   // Like Reply
-  const handleLikeReply = async (qId: string, rId: string) => {
-    try {
-      const questionRef = doc(db, "forum_questions", qId);
-      await runTransaction(db, async (transaction) => {
-        const sfDoc = await transaction.get(questionRef);
-        if (!sfDoc.exists()) {
-          throw new Error("Documento non trovato!");
+  const handleLikeReply = (qId: string, rId: string) => {
+    setQuestions((prev) =>
+      prev.map((q) => {
+        if (q.id === qId) {
+          return {
+            ...q,
+            replies: q.replies.map((r) => {
+              if (r.id === rId) {
+                const hasLiked = r.likedBy.includes("user");
+                const updatedLikedBy = hasLiked
+                  ? r.likedBy.filter((u) => u !== "user")
+                  : [...r.likedBy, "user"];
+                return {
+                  ...r,
+                  likes: r.likes + (hasLiked ? -1 : 1),
+                  likedBy: updatedLikedBy,
+                };
+              }
+              return r;
+            }),
+          };
         }
-        const data = sfDoc.data();
-        const replies = data.replies || [];
-        const updatedReplies = replies.map((r: any) => {
-          if (r.id === rId) {
-            const likedBy = r.likedBy || [];
-            const hasLiked = likedBy.includes("user");
-            const updatedLikedBy = hasLiked
-              ? likedBy.filter((u: string) => u !== "user")
-              : [...likedBy, "user"];
-            const newLikes = (r.likes || 0) + (hasLiked ? -1 : 1);
-            return {
-              ...r,
-              likes: newLikes,
-              likedBy: updatedLikedBy,
-            };
-          }
-          return r;
-        });
-        transaction.update(questionRef, {
-          replies: updatedReplies,
-        });
-      });
-    } catch (error) {
-      console.error("Error liking reply:", error);
-      toast.error("Impossibile mettere mi piace alla risposta. Riprova.");
-    }
+        return q;
+      })
+    );
   };
 
   // Toggle replies expanded state
@@ -186,37 +144,34 @@ export function AbilitaForum() {
   };
 
   // Submit Question
-  const handleSubmitQuestion = async (e: React.FormEvent) => {
+  const handleSubmitQuestion = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newQuestionName.trim() || !newQuestionContent.trim()) {
       toast.error("Per favore, compila tutti i campi obbligatori.");
       return;
     }
 
-    try {
-      await addDoc(collection(db, "forum_questions"), {
-        author: newQuestionName.trim(),
-        heroId: newQuestionHero,
-        content: newQuestionContent.trim(),
-        createdAt: new Date().toISOString(),
-        likes: 0,
-        likedBy: [],
-        replies: [],
-      });
+    const newQuestion: ForumQuestion = {
+      id: `q-${Date.now()}`,
+      author: newQuestionName.trim(),
+      heroId: newQuestionHero,
+      content: newQuestionContent.trim(),
+      createdAt: new Date().toISOString(),
+      likes: 0,
+      likedBy: [],
+      replies: [],
+    };
 
-      setNewQuestionName("");
-      setNewQuestionHero("general");
-      setNewQuestionContent("");
-      setShowAskForm(false);
-      toast.success("Domanda pubblicata con successo nel forum!");
-    } catch (error) {
-      console.error("Error adding question:", error);
-      toast.error("Impossibile pubblicare la domanda. Riprova.");
-    }
+    setQuestions((prev) => [newQuestion, ...prev]);
+    setNewQuestionName("");
+    setNewQuestionHero("general");
+    setNewQuestionContent("");
+    setShowAskForm(false);
+    toast.success("Domanda pubblicata con successo nel forum!");
   };
 
   // Submit Reply
-  const handleSubmitReply = async (e: React.FormEvent, qId: string) => {
+  const handleSubmitReply = (e: React.FormEvent, qId: string) => {
     e.preventDefault();
     if (!newReplyName.trim() || !newReplyContent.trim()) {
       toast.error("Per favore, compila tutti i campi.");
@@ -232,34 +187,28 @@ export function AbilitaForum() {
       likedBy: [],
     };
 
-    try {
-      const questionRef = doc(db, "forum_questions", qId);
-      await runTransaction(db, async (transaction) => {
-        const sfDoc = await transaction.get(questionRef);
-        if (!sfDoc.exists()) {
-          throw new Error("Documento non trovato!");
+    setQuestions((prev) =>
+      prev.map((q) => {
+        if (q.id === qId) {
+          return {
+            ...q,
+            replies: [...q.replies, newReply],
+          };
         }
-        const data = sfDoc.data();
-        const currentReplies = data.replies || [];
-        transaction.update(questionRef, {
-          replies: [...currentReplies, newReply]
-        });
-      });
+        return q;
+      })
+    );
 
-      // Expand replies automatically when a new one is added
-      setExpandedRepliesIds((prev) => ({
-        ...prev,
-        [qId]: true,
-      }));
+    // Expand replies automatically when a new one is added
+    setExpandedRepliesIds((prev) => ({
+      ...prev,
+      [qId]: true,
+    }));
 
-      setNewReplyName("");
-      setNewReplyContent("");
-      setShowReplyFormId(null);
-      toast.success("Risposta pubblicata con successo!");
-    } catch (error) {
-      console.error("Error adding reply:", error);
-      toast.error("Impossibile inviare la risposta. Riprova.");
-    }
+    setNewReplyName("");
+    setNewReplyContent("");
+    setShowReplyFormId(null);
+    toast.success("Risposta pubblicata con successo!");
   };
 
   // Filter questions
@@ -432,14 +381,7 @@ export function AbilitaForum() {
 
         {/* Questions List */}
         <div className="space-y-6">
-          {loading ? (
-            <div className="text-center py-12">
-              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-gold border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" />
-              <p className="text-gold-soft mt-3 text-sm" style={{ fontFamily: "var(--font-display)" }}>
-                Caricamento discussioni...
-              </p>
-            </div>
-          ) : filteredQuestions.length > 0 ? (
+          {filteredQuestions.length > 0 ? (
             filteredQuestions.map((q) => {
               const heroObj = heroesList.find((h) => h.id === q.heroId);
               const isHeroGeneral = q.heroId === "general";

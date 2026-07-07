@@ -23,7 +23,7 @@ const heroData: Record<string, HeroAbility> = {
   },
   montwel: {
     name: "Montwel",
-    images: ["/abilit/montwel1.png", "/abilit/montwel2.png"],
+    images: ["/abilit/montwel2.png"],
     description: "Montwel può decidere se attaccare a distanza o ravvicinato, ovviamente vale la regola generale che se si trova un nemico" +
     "davanti dovrà necessariamente essere colpito lui. Se Montwel decide di attaccare a distanza puòp attacare fino a range 4 in tal caso se l'attacco"+
     "va a buon fine l'avversario subirà 3 danni e sarà immobilizzato per un turno. Se Montwel decide di attaccare un bersaglio adiacente infliggerà 6 danni senza immbolizzare.",

@@ -18,9 +18,8 @@ const heroData: Record<string, HeroAbility> = {
     name: "Ryker",
     images: ["/abilit/ryker.png"],
     description:
-      "Questa è la descrizione di esempio per le abilità di Ryker. " +
-      "Sostituisci questo testo con la vera descrizione delle sue abilità speciali, " +
-      "attacchi e strategie di gioco.",
+      "Ryker è in range quindi può colpire in maniera diretta Agri, tira il dado, se supera l'agilità di Agri (3) infliggi danno ad Agri e il colpo rimbalza"+
+      "In questo caso il colpo rimbalza su Karka e Portium, il giocatore dovrà tirare il dado prima per uno e poi per l'altro per vedere chi viene colpito",
   },
   montwel: {
     name: "Montwel",

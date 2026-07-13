@@ -59,7 +59,7 @@ const heroesList = [
 export function AbilitaForum() {
   const [questions, setQuestions] = useState<ForumQuestion[]>(() => {
     if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("megaad_abilities_forum");
+      const saved = localStorage.getItem("megaad_abilities_forum_v2");
       if (saved) {
         try {
           return JSON.parse(saved);
@@ -73,7 +73,7 @@ export function AbilitaForum() {
 
   // Sync to local storage
   useEffect(() => {
-    localStorage.setItem("megaad_abilities_forum", JSON.stringify(questions));
+    localStorage.setItem("megaad_abilities_forum_v2", JSON.stringify(questions));
   }, [questions]);
 
   // Filtering states

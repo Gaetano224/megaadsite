@@ -293,34 +293,8 @@ function HeroAbilityPage() {
             <div className="mx-auto mt-5 h-px w-32 gold-divider" />
           </div>
 
-          {/* Images + Description Layout */}
-          <div className="grid gap-10 md:grid-cols-2 items-start">
-            {/* Images Column */}
-            <div className="flex flex-col gap-6">
-              {hero.images.map((img, i) => (
-                <div
-                  key={i}
-                  className="overflow-hidden rounded-lg gold-frame bg-navy group"
-                >
-                  <div className="relative overflow-hidden">
-                    {/* Spotlight overlay */}
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_40%,_rgba(10,17,40,0.6)_100%)] z-10 pointer-events-none" />
-                    <img
-                      src={img}
-                      alt={`${hero.name} abilità ${i + 1}`}
-                      className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-[1.02]"
-                    />
-                  </div>
-                </div>
-              ))}
-
-              {hero.images.length === 0 && (
-                <div className="overflow-hidden rounded-lg gold-frame bg-navy flex items-center justify-center aspect-[4/5]">
-                  <p className="text-gold/40 text-sm italic">Immagine non ancora disponibile</p>
-                </div>
-              )}
-            </div>
-
+          {/* Description + Images Layout */}
+          <div className={`grid gap-10 items-start ${hero.images && hero.images.length > 0 ? "md:grid-cols-2" : "grid-cols-1 max-w-3xl mx-auto"}`}>
             {/* Description Column */}
             <div className="gold-frame rounded-lg bg-navy/80 p-8 md:p-10">
               <h2
@@ -329,10 +303,32 @@ function HeroAbilityPage() {
               >
                 Descrizione Abilità
               </h2>
-              <div className="text-foreground/85 leading-relaxed text-base md:text-lg space-y-4">
+              <div className="text-foreground/85 leading-relaxed text-base md:text-lg space-y-4 whitespace-pre-line">
                 <p>{hero.description}</p>
               </div>
             </div>
+
+            {/* Images Column (Rendered only if images exist) */}
+            {hero.images && hero.images.length > 0 && (
+              <div className="flex flex-col gap-6">
+                {hero.images.map((img, i) => (
+                  <div
+                    key={i}
+                    className="overflow-hidden rounded-lg gold-frame bg-navy group"
+                  >
+                    <div className="relative overflow-hidden">
+                      {/* Spotlight overlay */}
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_40%,_rgba(10,17,40,0.6)_100%)] z-10 pointer-events-none" />
+                      <img
+                        src={img}
+                        alt={`${hero.name} abilità ${i + 1}`}
+                        className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-[1.02]"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>

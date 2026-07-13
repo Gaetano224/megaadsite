@@ -14,64 +14,185 @@ interface HeroAbility {
 }
 
 const heroData: Record<string, HeroAbility> = {
-  ryker: {
-    name: "Ryker",
-    images: ["/abilit/ryker.png"],
+  agri: {
+    name: "Agri",
+    images: [],
     description:
-      "Ryker è in range quindi può colpire in maniera diretta Agri, tira il dado, se supera l'agilità di Agri (3) infliggi 5 danni ad Agri e il colpo rimbalza"+
-      "In questo caso il colpo rimbalza su Karka e Portium, il giocatore dovrà tirare il dado prima per uno e poi per l'altro per vedere se anche loro subiranno danni, in questo caso 3.",
+      "Sciame Appiccicoso: Infligge 2 danni a un nemico entro gittata e contemporaneamente cura un alleato scelto di 2 Punti Vita. Il bersaglio danneggiato e l'alleato curato possono essere differenti.",
   },
-  montwel: {
-    name: "Montwel",
-    images: ["/abilit/montwel2.png"],
-    description: "Montwel può decidere se attaccare a distanza o ravvicinato, ovviamente vale la regola generale che se si trova un nemico" +
-    "davanti dovrà necessariamente essere colpito lui. Se Montwel decide di attaccare a distanza puòp attacare fino a range 4 in tal caso se l'attacco"+
-    "va a buon fine l'avversario subirà 3 danni e sarà immobilizzato per un turno. Se Montwel decide di attaccare un bersaglio adiacente infliggerà 6 danni senza immbolizzare.",
+  aiona: {
+    name: "Aiona",
+    images: [],
+    description:
+      "Vortice d'Acciaio: Infligge 4 danni a tutti i nemici presenti nelle caselle adiacenti ad Aiona. Gli alleati non vengono colpiti.",
+  },
+  azrael: {
+    name: "Azrael",
+    images: [],
+    description:
+      "Colpo Consacrato: Infligge 4 danni a un nemico entro gittata. Se il bersaglio viene colpito da almeno un altro attacco entro l'inizio del prossimo turno di Azrael, subirà 2 danni aggiuntivi per ogni attacco ricevuto durante quel periodo.",
+  },
+  caspiana: {
+    name: "Caspiana",
+    images: [],
+    description:
+      "Trappola a Scatto: Infligge 6 danni a un bersaglio entro gittata. Inoltre, fino all'inizio del suo prossimo turno, il costo in Mana necessario al movimento del bersaglio viene raddoppiato.",
+  },
+  dianthra: {
+    name: "Dianthra",
+    images: [],
+    description:
+      "Lama di Mana: Infligge 6 danni a un nemico entro gittata. All'inizio del prossimo turno del giocatore che controlla il bersaglio, quel giocatore avrà 3 Mana in meno da spendere durante il turno.",
+  },
+  elara: {
+    name: "Elara",
+    images: [],
+    description:
+      "Dardo di Ghiaccio: Infligge 4 danni a un nemico entro gittata. Fino all'inizio del suo prossimo turno, il costo di movimento del bersaglio aumenta di 3 Mana per ogni casella percorsa.",
+  },
+  faelan: {
+    name: "Faelan",
+    images: [],
+    description:
+      "Tocco Rigenerante: Scegli un alleato. All'inizio dei suoi prossimi due turni, quell'alleato recupera 3 Punti Vita. L'effetto termina automaticamente dopo la seconda attivazione.",
   },
   gostrel: {
     name: "Gostrel",
     images: ["/abilit/gostrel.png"],
-    description: "Inserisci qui la descrizione delle abilità di Gostrel.",
-  },
-  zayne: {
-    name: "Zayne",
-    images: ["/abilit/zayne.png"],
-    description: "Inserisci qui la descrizione delle abilità di Zayne.",
-  },
-  theron: {
-    name: "Theron",
-    images: ["/abilit/theron.png"],
-    description: "Inserisci qui la descrizione delle abilità di Theron.",
-  },
-  kenji: {
-    name: "Kenji",
-    images: ["/abilit/kenji1.png", "/abilit/kenji2.png"],
-    description: "Inserisci qui la descrizione delle abilità di Kenji.",
-  },
-  kaelen: {
-    name: "Kaelen",
-    images: ["/abilit/kaelen1.png"],
-    description: "Inserisci qui la descrizione delle abilità di Kaelen.",
-  },
-  hannya: {
-    name: "Hannya",
-    images: ["/abilit/hannya1.png", "/abilit/hannya2.png"],
-    description: "Inserisci qui la descrizione delle abilità di Hannya.",
-  },
-  "sir-gideon": {
-    name: "Sir Gideon",
-    images: ["/abilit/sir.png"],
-    description: "Inserisci qui la descrizione delle abilità di Sir Gideon.",
-  },
-  ollerts: {
-    name: "Ollerts",
-    images: ["/abilit/ollerts.png"],
-    description: "Inserisci qui la descrizione delle abilità di Ollerts.",
+    description:
+      "Provocazione del Colosso (Passiva): All'inizio del turno avversario, tutti i nemici entro la gittata di Gostrel devono effettuare immediatamente un attacco base contro di lui, se possibile. Dopo aver eseguito questo attacco, quei nemici non possono effettuare ulteriori attacchi durante quel turno.",
   },
   grorn: {
     name: "Grorn",
     images: [],
-    description: "Inserisci qui la descrizione delle abilità di Grorn.",
+    description:
+      "Carica Travolgente: Grorn si muove di 2 caselle in linea retta. Il primo nemico attraversato o raggiunto durante la carica subisce 4 danni. Lo spostamento termina immediatamente dopo aver colpito un bersaglio.",
+  },
+  hannya: {
+    name: "Hannya",
+    images: ["/abilit/hannya1.png", "/abilit/hannya2.png"],
+    description:
+      "Sguardo Incantatore: Scegli un nemico entro gittata. Il bersaglio viene ammaliato e può essere spostato fino a 3 caselle in direzione scelta dal giocatore che controlla Hannya. Al termine dello spostamento il bersaglio subisce 1 danno.",
+  },
+  herkaimer: {
+    name: "Herkaimer",
+    images: [],
+    description:
+      "Martello del Potere: Infligge 1 danno a tutti i nemici presenti nella stessa colonna del bersaglio scelto. Tutti i nemici colpiti diventano inoltre Immobilizzati fino all'inizio del loro prossimo turno.",
+  },
+  ioluali: {
+    name: "Ioluali",
+    images: [],
+    description:
+      "Pasto Ideale: Scegli un alleato. All'inizio del suo prossimo turno recupererà 4 Punti Vita. L'effetto si applica una sola volta e poi termina.",
+  },
+  istras: {
+    name: "Istras",
+    images: [],
+    description:
+      "Freccia Velenosa: Infligge 3 danni immediatamente e ulteriori 3 danni all'inizio del prossimo turno del bersaglio, per un totale di 6 danni distribuiti su due turni.",
+  },
+  kaelen: {
+    name: "Kaelen",
+    images: ["/abilit/kaelen1.png"],
+    description:
+      "Affondo Perforante: Kaelen colpisce fino a due nemici adiacenti tra loro e disposti in linea retta rispetto alla direzione dell'attacco. Entrambi i bersagli subiscono 4 danni. Se è presente un solo bersaglio valido, l'abilità colpisce soltanto quello.",
+  },
+  karka: {
+    name: "Karka",
+    images: [],
+    description:
+      "Nenia della Forza: Tutti gli alleati della squadra recuperano immediatamente 2 Punti Vita, indipendentemente dalla loro posizione sul campo di battaglia. L'effetto non può aumentare i Punti Vita oltre il valore massimo iniziale di ciascun eroe.",
+  },
+  kenji: {
+    name: "Kenji",
+    images: ["/abilit/kenji1.png", "/abilit/kenji2.png"],
+    description:
+      "Pugno di Salvezza: Kenji può scegliere un alleato oppure un nemico entro gittata:\n\n- Se il bersaglio è un alleato, viene spostato di 2 caselle in una direzione valida scelta dal giocatore che controlla Kenji.\n- Se il bersaglio è un nemico, viene spostato di 2 caselle, subisce 3 danni e viene inoltre Stordito fino all'inizio del suo prossimo turno. Un eroe stordito non può muoversi, attaccare o utilizzare abilità.",
+  },
+  kirin: {
+    name: "Kirin",
+    images: [],
+    description:
+      "Tiro di Fucile: Infligge 4 danni a un nemico entro gittata e lo Immobilizza fino all'inizio del suo prossimo turno. Un bersaglio immobilizzato non può muoversi ma può comunque attaccare e utilizzare abilità dalla propria posizione.",
+  },
+  luver: {
+    name: "Luver",
+    images: [],
+    description:
+      "Potenza Suprema: Luver seleziona due nemici qualsiasi sul campo di battaglia, indipendentemente dalla distanza tra loro o dalla propria gittata. I due bersagli si scambiano immediatamente di posizione e subiscono entrambi 2 danni. Se una delle due caselle non può essere occupata dal nuovo bersaglio, lo scambio non può essere effettuato.",
+  },
+  montwel: {
+    name: "Montwel",
+    images: ["/abilit/montwel2.png"],
+    description:
+      "Mossa Imprevedibile: L'effetto dell'abilità dipende dalla distanza dal bersaglio:\n\n- Se il bersaglio si trova a una distanza compresa tra 2 e 4 caselle, subisce 3 danni e viene Immobilizzato fino all'inizio del suo prossimo turno.\n- Se il bersaglio si trova a 1 casella di distanza, subisce invece 5 danni, senza subire immobilizzazione.",
+  },
+  ollerts: {
+    name: "Ollerts",
+    images: ["/abilit/ollerts.png"],
+    description:
+      "Morso del Pipistrello (Passiva): Quando Ollerts colpisce un nemico alle spalle, il suo attacco infligge 7 danni aggiuntivi. Un attacco è considerato \"alle spalle\" quando Ollerts si trova nella casella immediatamente opposta rispetto alla direzione verso cui è rivolto il bersaglio secondo l'orientamento del tassello o secondo le regole concordate dai giocatori a inizio partita.\n\n*Definizione ufficiale di \"alle spalle\": Si considera che Ollerts colpisca alle spalle se l'attacco viene effettuato posizionandosi nella casella che si trova alle spalle dell'orientamento del bersaglio (es. opposta alla direzione frontale del tassello dell'eroe bersaglio).*",
+  },
+  portium: {
+    name: "Portium",
+    images: [],
+    description:
+      "Colpo da Maestro: Portium infligge 4 danni a un nemico entro gittata. Questo attacco non richiede un tiro per colpire e non può essere evitato tramite il valore di Schivata del bersaglio.",
+  },
+  rapdar: {
+    name: "Rapdar",
+    images: [],
+    description:
+      "Urlo di Guerra: Scegli un alleato entro gittata. Il suo prossimo attacco base infliggerà 3 danni aggiuntivi. Il bonus viene consumato al primo attacco base effettuato, indipendentemente dal bersaglio scelto.",
+  },
+  ryker: {
+    name: "Ryker",
+    images: ["/abilit/ryker.png"],
+    description:
+      "Fulmine a Catena: Infligge 5 danni al bersaglio principale scelto entro gittata. Inoltre, tutti i nemici adiacenti al bersaglio principale subiscono 3 danni aggiuntivi. Gli alleati non vengono colpiti dall'effetto secondario.",
+  },
+  sertor: {
+    name: "Sertor",
+    images: [],
+    description:
+      "Vendetta Fredda: Sertor avvelena il bersaglio con un attacco speciale. Il nemico subisce 3 danni all'inizio dei suoi prossimi due turni, per un totale di 6 danni nel tempo. Gli effetti del veleno si applicano anche se Sertor viene sconfitto nel frattempo.",
+  },
+  sindaum: {
+    name: "Sindaum",
+    images: [],
+    description:
+      "Protezione Inumana: Sindaum protegge tutti gli alleati adiacenti a lui fino all'inizio del suo prossimo turno. Per ciascun alleato protetto vengono annullati i primi 6 danni subiti durante questo periodo. I danni eccedenti vengono applicati normalmente.",
+  },
+  "sir-gideon": {
+    name: "Sir Gideon",
+    images: ["/abilit/sir.png"],
+    description:
+      "Urto Poderoso: Scegli un nemico entro gittata e spostalo di 2 caselle in linea retta in una direzione valida. Al termine dello spostamento il bersaglio subisce 3 danni. Se lo spostamento viene interrotto da un ostacolo, il bersaglio viene fermato nella prima casella disponibile.",
+  },
+  theron: {
+    name: "Theron",
+    images: ["/abilit/theron.png"],
+    description:
+      "Presa Rampicante: Seleziona un'area 3×3 entro gittata. Tutti i nemici presenti nell'area subiscono 1 danno e diventano Immobilizzati fino all'inizio del loro prossimo turno. Un eroe immobilizzato non può muoversi ma può comunque attaccare e usare abilità.",
+  },
+  vespyr: {
+    name: "Vespyr",
+    images: [],
+    description:
+      "Patto di Sangue: Vespyr recupera immediatamente 7 Punti Vita, quindi subisce 2 danni non prevenibili. L'abilità non può aumentare i suoi Punti Vita oltre il valore massimo iniziale.",
+  },
+  xelif: {
+    name: "Xelif",
+    images: [],
+    description:
+      "Caramella Appiccicosa: Infligge 3 danni a un nemico entro gittata e lo Immobilizza fino all'inizio del suo prossimo turno.",
+  },
+  zayne: {
+    name: "Zayne",
+    images: ["/abilit/zayne.png"],
+    description:
+      "Passo d'Ombra: Zayne si sposta in linea retta fino a una casella libera adiacente a un alleato scelto. Dopo lo spostamento infligge immediatamente 6 danni a un nemico entro gittata. Lo spostamento ignora la distanza normale percorribile tramite movimento standard.",
   },
 };
 

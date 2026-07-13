@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MessageSquare, ThumbsUp, Send, Search, Plus, X, Calendar, User, ChevronDown, ChevronUp } from "lucide-react";
+import { MessageSquare, ThumbsUp, Send, Search, Plus, X, Calendar, User, ChevronDown, ChevronUp, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface ForumReply {
@@ -152,6 +152,56 @@ export function AbilitaForum() {
         return q;
       })
     );
+  };
+
+  // Check if admin is authenticated
+  const checkAdminAuth = (): boolean => {
+    if (typeof window === "undefined") return false;
+    
+    // Check if already authenticated in this session
+    if (sessionStorage.getItem("megaad_admin_authenticated") === "true") {
+      return true;
+    }
+    
+    const password = window.prompt("Inserisci la password di amministrazione per procedere con l'eliminazione:");
+    if (password === "megaadadmin") {
+      sessionStorage.setItem("megaad_admin_authenticated", "true");
+      toast.success("Autenticato come amministratore.");
+      return true;
+    }
+    
+    if (password !== null) {
+      toast.error("Password errata. Permesso negato.");
+    }
+    return false;
+  };
+
+  // Delete Question
+  const handleDeleteQuestion = (qId: string) => {
+    if (!checkAdminAuth()) return;
+    if (window.confirm("Sei sicuro di voler eliminare questa domanda e tutte le sue risposte?")) {
+      setQuestions((prev) => prev.filter((q) => q.id !== qId));
+      toast.success("Domanda eliminata con successo.");
+    }
+  };
+
+  // Delete Reply
+  const handleDeleteReply = (qId: string, rId: string) => {
+    if (!checkAdminAuth()) return;
+    if (window.confirm("Sei sicuro di voler eliminare questa risposta?")) {
+      setQuestions((prev) =>
+        prev.map((q) => {
+          if (q.id === qId) {
+            return {
+              ...q,
+              replies: q.replies.filter((r) => r.id !== rId),
+            };
+          }
+          return q;
+        })
+      );
+      toast.success("Risposta eliminata con successo.");
+    }
   };
 
   // Toggle replies expanded state
@@ -435,11 +485,20 @@ export function AbilitaForum() {
                       </span>
                     </div>
 
-                    {/* Date */}
-                    <span className="flex items-center gap-1.5 text-xs text-foreground/50">
-                      <Calendar className="h-3.5 w-3.5 text-gold/40" />
-                      {formatDate(q.createdAt)}
-                    </span>
+                    {/* Date & Delete */}
+                    <div className="flex items-center gap-3">
+                      <span className="flex items-center gap-1.5 text-xs text-foreground/50">
+                        <Calendar className="h-3.5 w-3.5 text-gold/40" />
+                        {formatDate(q.createdAt)}
+                      </span>
+                      <button
+                        onClick={() => handleDeleteQuestion(q.id)}
+                        className="text-red-400/70 hover:text-red-400 p-1 rounded hover:bg-red-500/10 transition-all duration-200 cursor-pointer"
+                        title="Elimina discussione"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
                   </div>
 
                   {/* Question Text */}
@@ -561,10 +620,19 @@ export function AbilitaForum() {
                                 <User className="h-3 w-3 text-gold/60" />
                                 <span className="font-semibold text-foreground/80">{reply.author}</span>
                               </span>
-                              <span className="flex items-center gap-1 text-xs text-foreground/50">
-                                <Calendar className="h-3 w-3 text-gold/40" />
-                                {formatDate(reply.createdAt)}
-                              </span>
+                              <div className="flex items-center gap-2">
+                                <span className="flex items-center gap-1 text-xs text-foreground/50">
+                                  <Calendar className="h-3 w-3 text-gold/40" />
+                                  {formatDate(reply.createdAt)}
+                                </span>
+                                <button
+                                  onClick={() => handleDeleteReply(q.id, reply.id)}
+                                  className="text-red-400/60 hover:text-red-400 p-1 rounded hover:bg-red-500/10 transition-all duration-200 cursor-pointer"
+                                  title="Elimina risposta"
+                                >
+                                  <Trash2 className="h-3.5 w-3.5" />
+                                </button>
+                              </div>
                             </div>
 
                             {/* Reply Content */}

@@ -12,13 +12,13 @@ const steps = [
     num: "02",
     icon: Dices,
     title: "Combattimento",
-    body: "Ogni turno spendi Mana per muovere, attaccare o usare abilità. Tira il D6: se superi la schivata del bersaglio, il colpo va a segno.",
+    body: "Ogni turno spendi Mana per muovere, e poi per eseguire attacco base o abilità. Tira il D6: se eguagli o superi il Valore Schivata del bersaglio, il colpo va a segno.",
   },
   {
     num: "03",
     icon: Trophy,
     title: "Vittoria",
-    body: "Convinci l'avversario che non potrà più batterti: sconfiggi più eroi possibili (6-3, 5-2, 4-1, 3-1, 3-0) e costringilo alla fuga.",
+    body: "Sconfiggi gli eroi nemici fino a raggiungere una differenza di 3 giocatori per vincere (casi 6-3, 5-2, 4-1, 3-1). In caso di 2-1, 1-1 o 2-2 la partita finisce in parità.",
   },
 ];
 

@@ -85,7 +85,7 @@ export function AbilityFAQModal({ variant = "banner" }: AbilityFAQModalProps) {
         </DialogHeader>
 
         <Accordion type="single" collapsible className="w-full space-y-4">
-          {/* Mana and Activation */}
+          {/* Mana Management */}
           <AccordionItem
             value="item-1"
             className="border border-gold/15 rounded-md bg-navy-deep/30 px-4 hover:border-gold/30 transition-colors"
@@ -93,26 +93,28 @@ export function AbilityFAQModal({ variant = "banner" }: AbilityFAQModalProps) {
             <AccordionTrigger className="hover:no-underline text-gold-soft hover:text-gold font-medium py-4 text-base md:text-lg flex gap-3 items-center">
               <div className="flex items-center gap-3">
                 <Sparkles className="h-5 w-5 text-gold flex-shrink-0" />
-                <span>1. Gestione Mana & Attivazione</span>
+                <span>1. Gestione Mana</span>
               </div>
             </AccordionTrigger>
             <AccordionContent className="text-foreground/80 leading-relaxed text-sm md:text-base space-y-3 pb-4">
               <p>
-                Durante il proprio turno, ogni giocatore dispone di una riserva di <strong>Punti Mana (PM)</strong>. 
-                Ogni abilità speciale riporta un costo specifico in Mana necessario per l'attivazione.
+                In una partita a 2 giocatori per ogni turno avrete a disposizione <strong>20 MANA</strong>, in una partita a 4 avrete a disposizione <strong>15 MANA</strong> per turno.
               </p>
               <ul className="list-disc pl-5 space-y-2 mt-2">
                 <li>
-                  <strong className="text-gold-soft">Attivazione</strong>: Puoi lanciare un'abilità solo nel tuo turno d'azione, dichiarando il bersaglio ed effettuando la spesa di Mana richiesta.
+                  <strong className="text-gold-soft">Inizio Turno</strong>: All'inizio di ogni turno ogni giocatore dispone di Mana. I Mana non spesi durante il turno vengono persi a fine turno.
                 </li>
                 <li>
-                  <strong className="text-gold-soft">Limite di Mana</strong>: Non è possibile attivare abilità se i Punti Mana attuali sono inferiori al costo indicato.
+                  <strong className="text-gold-soft">Ordine di Attivazione</strong>: Durante il proprio turno è possibile attivare gli Eroi in qualsiasi ordine.
+                </li>
+                <li>
+                  <strong className="text-gold-soft">Costo delle Azioni</strong>: Ogni giocatore può compiere qualsiasi numero di azioni, purché il costo in Mana venga pagato.
                 </li>
               </ul>
             </AccordionContent>
           </AccordionItem>
 
-          {/* Range and Distance */}
+          {/* Hero Actions */}
           <AccordionItem
             value="item-2"
             className="border border-gold/15 rounded-md bg-navy-deep/30 px-4 hover:border-gold/30 transition-colors"
@@ -120,54 +122,85 @@ export function AbilityFAQModal({ variant = "banner" }: AbilityFAQModalProps) {
             <AccordionTrigger className="hover:no-underline text-gold-soft hover:text-gold font-medium py-4 text-base md:text-lg flex gap-3 items-center">
               <div className="flex items-center gap-3">
                 <Sword className="h-5 w-5 text-gold flex-shrink-0" />
-                <span>2. Portata e Gittata (Caselle)</span>
+                <span>2. Azioni degli Eroi</span>
               </div>
             </AccordionTrigger>
             <AccordionContent className="text-foreground/80 leading-relaxed text-sm md:text-base space-y-3 pb-4">
               <p>
-                La portata definisce la distanza massima (espressa in caselle della mappa 8×10) a cui l'abilità può fare effetto.
+                Ogni eroe durante il turno, oltre a muoversi potrà solo usare attacco base <strong>O</strong> abilità speciale, <strong>MAI</strong> entrambe.
               </p>
               <ul className="list-disc pl-5 space-y-2 mt-2">
                 <li>
-                  <strong className="text-gold-soft">Calcolo della Distanza</strong>: Si conta il percorso ortogonale e diagonale più breve per raggiungere il bersaglio.
+                  <strong className="text-gold-soft">Movimento</strong>: Sposta l'eroe di quante caselle desideri. Il Costo dello spostamento vale per ogni singola casella.
                 </li>
                 <li>
-                  <strong className="text-gold-soft">Abilità a Contatto (Mischia)</strong>: Richiedono che il bersaglio si trovi in una casella adiacente (distanza 1).
+                  <strong className="text-gold-soft">Attacco Base</strong>: Procura al nemico danni secondo il valore Danno dell'attacco base indicato sulla carta e ha un proprio costo. Effettua un tiro per colpire contro il Valore Schivata del bersaglio.
                 </li>
                 <li>
-                  <strong className="text-gold-soft">Abilità a Distanza</strong>: Permettono di colpire bersagli lontani (es. Portata 3 o 4), ma sono soggette alle regole di Linea di Vista.
+                  <strong className="text-gold-soft">Abilità Speciale</strong>: Ha un proprio costo. Se l'abilità è offensiva, richiede un tiro per colpire contro il Valore Schivata del bersaglio; se è difensiva, non richiede alcun tiro. La lettera <strong>P</strong> indica che l'abilità è sempre attiva e si verifica nelle condizioni specificate nell'abilità stessa.
                 </li>
               </ul>
             </AccordionContent>
           </AccordionItem>
 
-          {/* Line of Sight */}
+          {/* Useful Terms */}
           <AccordionItem
             value="item-3"
             className="border border-gold/15 rounded-md bg-navy-deep/30 px-4 hover:border-gold/30 transition-colors"
           >
             <AccordionTrigger className="hover:no-underline text-gold-soft hover:text-gold font-medium py-4 text-base md:text-lg flex gap-3 items-center">
               <div className="flex items-center gap-3">
-                <Eye className="h-5 w-5 text-gold flex-shrink-0" />
-                <span>3. Linea di Vista (LoS)</span>
+                <ShieldAlert className="h-5 w-5 text-gold flex-shrink-0" />
+                <span>3. Termini Utili</span>
               </div>
             </AccordionTrigger>
-            <AccordionContent className="text-foreground/80 leading-relaxed text-sm md:text-base space-y-3 pb-4">
-              <p>
-                Per bersagliare un'unità nemica con un'abilità a distanza è necessario avere una <strong>linea di vista libera</strong>, tranne nei casi in cui l'abilità dichiari esplicitamente di ignorarla.
-              </p>
-              <ul className="list-disc pl-5 space-y-2 mt-2">
-                <li>
-                  <strong className="text-gold-soft">Come si calcola</strong>: Traccia una linea immaginaria dal centro della casella dell'attaccante al centro della casella del difensore.
-                </li>
-                <li>
-                  <strong className="text-gold-soft">Ostruzioni</strong>: Se la linea tocca o attraversa una casella con un ostacolo (es. pilastri, muri) o un altro eroe (nemico o alleato), la linea di vista è ostruita.
-                </li>
-              </ul>
+            <AccordionContent className="text-foreground/80 leading-relaxed text-sm md:text-base space-y-4 pb-4">
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="p-3 bg-navy-deep/60 rounded border border-gold/10">
+                  <h4 className="text-gold-soft font-semibold text-xs uppercase tracking-wider mb-1">
+                    Stordire
+                  </h4>
+                  <p className="text-xs text-foreground/85">
+                    Impedire al bersaglio di muoversi e di compiere qualsiasi azione, inclusi gli attacchi.
+                  </p>
+                </div>
+                <div className="p-3 bg-navy-deep/60 rounded border border-gold/10">
+                  <h4 className="text-gold-soft font-semibold text-xs uppercase tracking-wider mb-1">
+                    Immobilizzare
+                  </h4>
+                  <p className="text-xs text-foreground/85">
+                    Rendere impossibile il movimento del bersaglio, che può comunque attaccare dalla propria posizione.
+                  </p>
+                </div>
+                <div className="p-3 bg-navy-deep/60 rounded border border-gold/10">
+                  <h4 className="text-gold-soft font-semibold text-xs uppercase tracking-wider mb-1">
+                    Adiacenti
+                  </h4>
+                  <p className="text-xs text-foreground/85">
+                    Le caselle immediatamente sopra, sotto, a destra e a sinistra rispetto a un Eroe o punto di riferimento. Le diagonali non contano.
+                  </p>
+                </div>
+                <div className="p-3 bg-navy-deep/60 rounded border border-gold/10">
+                  <h4 className="text-gold-soft font-semibold text-xs uppercase tracking-wider mb-1">
+                    Spostare di X Caselle
+                  </h4>
+                  <p className="text-xs text-foreground/85">
+                    Spostare un Eroe in linea retta (orizzontale o verticale) per il numero di caselle indicato.
+                  </p>
+                </div>
+              </div>
+              <div className="p-3 bg-navy-deep/60 rounded border border-gold/10">
+                <h4 className="text-gold-soft font-semibold text-xs uppercase tracking-wider mb-1">
+                  Schivare il colpo
+                </h4>
+                <p className="text-xs text-foreground/85">
+                  Il risultato del dado dell'attaccante è inferiore al Valore Schivata del bersaglio.
+                </p>
+              </div>
             </AccordionContent>
           </AccordionItem>
 
-          {/* Status Effects */}
+          {/* Roll to Hit */}
           <AccordionItem
             value="item-4"
             className="border border-gold/15 rounded-md bg-navy-deep/30 px-4 hover:border-gold/30 transition-colors"
@@ -175,57 +208,42 @@ export function AbilityFAQModal({ variant = "banner" }: AbilityFAQModalProps) {
             <AccordionTrigger className="hover:no-underline text-gold-soft hover:text-gold font-medium py-4 text-base md:text-lg flex gap-3 items-center">
               <div className="flex items-center gap-3">
                 <Flame className="h-5 w-5 text-gold flex-shrink-0" />
-                <span>4. Stati Alterati e Condizioni</span>
+                <span>4. Tiro per Colpire (D6)</span>
               </div>
             </AccordionTrigger>
-            <AccordionContent className="text-foreground/80 leading-relaxed text-sm md:text-base space-y-3 pb-4">
-              <p>
-                Molte abilità lasciano effetti duraturi sui bersagli colpiti. Questi stati alterati vengono risolti all'inizio o alla fine del turno dell'eroe affetto.
-              </p>
-              <div className="grid gap-3 mt-2 sm:grid-cols-2">
-                <div className="p-3 bg-navy-deep/60 rounded border border-gold/10">
-                  <h4 className="text-gold-soft font-semibold text-xs uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                    <ShieldAlert className="h-3.5 w-3.5 text-gold" />
-                    Stordito (Stun)
-                  </h4>
-                  <p className="text-xs text-foreground/85">
-                    L'Eroe non può utilizzare abilità speciali né muoversi nel suo prossimo turno. Può solo eseguire attacchi base.
-                  </p>
-                </div>
-                <div className="p-3 bg-navy-deep/60 rounded border border-gold/10">
-                  <h4 className="text-gold-soft font-semibold text-xs uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                    <Flame className="h-3.5 w-3.5 text-gold" />
-                    Bruciato / Avvelenato
-                  </h4>
-                  <p className="text-xs text-foreground/85">
-                    Subisce danni automatici fissi all'inizio di ogni suo turno di attivazione finché l'effetto non scade o viene curato.
-                  </p>
-                </div>
-              </div>
+            <AccordionContent className="text-foreground/80 leading-relaxed text-sm md:text-base space-y-2 pb-4">
+              <ol className="list-decimal pl-5 space-y-2">
+                <li>Dichiarare tipo di attacco e bersaglio.</li>
+                <li>Tirare 1D6.</li>
+                <li>Se il risultato è maggiore o uguale al Valore Schivata del bersaglio, l'attacco colpisce. Se il risultato è inferiore, il colpo viene schivato.</li>
+              </ol>
             </AccordionContent>
           </AccordionItem>
 
-          {/* Cooldowns */}
+          {/* Obstacles and Terrain */}
           <AccordionItem
             value="item-5"
             className="border border-gold/15 rounded-md bg-navy-deep/30 px-4 hover:border-gold/30 transition-colors"
           >
             <AccordionTrigger className="hover:no-underline text-gold-soft hover:text-gold font-medium py-4 text-base md:text-lg flex gap-3 items-center">
               <div className="flex items-center gap-3">
-                <Hourglass className="h-5 w-5 text-gold flex-shrink-0" />
-                <span>5. Ricarica e Limiti (Cooldown)</span>
+                <Eye className="h-5 w-5 text-gold flex-shrink-0" />
+                <span>5. Ostacoli e Terreno</span>
               </div>
             </AccordionTrigger>
             <AccordionContent className="text-foreground/80 leading-relaxed text-sm md:text-base space-y-3 pb-4">
-              <p>
-                Le abilità più devastanti non possono essere lanciate consecutivamente a ogni turno.
-              </p>
-              <ul className="list-disc pl-5 space-y-2 mt-2">
+              <ul className="space-y-3">
                 <li>
-                  <strong className="text-gold-soft">Ricarica (CD)</strong>: Specifica il numero di turni del round che devono trascorrere prima che l'abilità ritorni disponibile.
+                  <strong className="text-gold-soft">MIRINO</strong>: Chi attacca nella colonna o nella riga del Mirino ottiene +1 alla Gittata (solo se la Gittata base è almeno 2). Il bonus non si applica se ci si trova direttamente sulla casella Mirino.
                 </li>
                 <li>
-                  <strong className="text-gold-soft">Limiti di Utilizzo</strong>: Alcune abilità passive o speciali sono limitate a "una volta per round" o "una volta per partita".
+                  <strong className="text-gold-soft">FIUME</strong>: Chi attacca nella colonna o nella riga del Fiume subisce -1 alla Gittata (solo se la Gittata base è almeno 2). Gli Eroi possono attraversarlo ma non fermarsi sopra.
+                </li>
+                <li>
+                  <strong className="text-gold-soft">MONTAGNA</strong>: Blocca il passaggio e la linea di vista. Non si può attaccare attraverso. Gli Assassini possono attraversarla ma non fermarsi sopra.
+                </li>
+                <li>
+                  <strong className="text-gold-soft">FOSSA</strong>: Nessun Eroe può attraversarla o fermarsi sopra. Si può attaccare attraverso. I Combattenti possono attraversarla ma non fermarsi sopra.
                 </li>
               </ul>
             </AccordionContent>

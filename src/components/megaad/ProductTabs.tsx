@@ -190,14 +190,14 @@ export function ProductTabs() {
               <div className="p-5 rounded-md bg-navy-deep/40 border border-gold/10 space-y-3">
                 <h4 className="text-lg uppercase tracking-widest text-gold-soft font-semibold">3. Risoluzione dei Combattimenti</h4>
                 <p className="text-sm text-foreground/85 leading-relaxed">
-                  Gli attacchi avvengono entro la gittata dell'arma o dell'abilità. La risoluzione è semi-deterministica: si lancia un <strong>Dado D6</strong> da combattimento e si somma il valore dell'attacco dell'Eroe. Se il totale supera il valore di <em>Schivata</em> del difensore, il colpo va a segno infliggendo ferite.
+                  Gli attacchi avvengono entro la gittata dell'arma o dell'abilità. Si lancia un <strong>Dado D6</strong> da combattimento: se il risultato è maggiore o uguale al Valore Schivata del bersaglio, l'attacco colpisce infliggendo i danni indicati.
                 </p>
               </div>
 
               <div className="p-5 rounded-md bg-navy-deep/40 border border-gold/10 space-y-3">
                 <h4 className="text-lg uppercase tracking-widest text-gold-soft font-semibold">4. Condizioni di Vittoria</h4>
                 <p className="text-sm text-foreground/85 leading-relaxed">
-                  Il gioco termina quando una squadra subisce abbastanza sconfitte da decretare la ritirata dei propri campioni superstiti. I punteggi ufficiali per decretare la vittoria sono: <strong>6-3, 5-2, 4-1, 3-1, 3-0</strong>. La resa psicologica e tattica dell'avversario determina la parola fine su Aethel.
+                  Lo scopo è sconfiggere gli eroi nemici fino ad arrivare a una differenza di 3 giocatori. In una partita 2vs2 si ha vittoria nei casi: <strong>6-3, 5-2, 4-1, 3-1</strong>. La partita finisce in parità in caso di: <strong>2-1, 1-1, 2-2</strong> (nel caso 1vs1 si esclude solo la combinazione 6-3).
                 </p>
               </div>
             </div>

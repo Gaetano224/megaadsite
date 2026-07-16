@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Search, X } from "lucide-react";
+import { Search, X, AlertTriangle } from "lucide-react";
 import { SectionTitle } from "@/components/megaad/SectionTitle";
 import { SiteFooter } from "@/components/megaad/SiteFooter";
 import { AbilityFAQModal } from "@/components/megaad/AbilityFAQModal";
@@ -112,6 +112,14 @@ function AbilitaEroi() {
       {/* Interactive Controls Section (FAQ Banner & Search Bar) */}
       <section className="px-6 pb-8">
         <div className="mx-auto max-w-3xl flex flex-col gap-6">
+          {/* Warning Banner: Pagina in aggiornamento */}
+          <div className="flex items-center gap-3 bg-gold/10 border border-gold/40 text-gold-soft px-4 py-3.5 rounded-lg shadow-[0_0_20px_rgba(212,175,55,0.15)]">
+            <AlertTriangle className="h-5 w-5 text-gold flex-shrink-0 animate-pulse" />
+            <p className="text-sm font-medium">
+              <strong>Pagina in aggiornamento:</strong> stiamo allineando tutte le descrizioni delle abilità degli eroi al regolamento ufficiale.
+            </p>
+          </div>
+
           {/* FAQ Compendium Modal Trigger */}
           <AbilityFAQModal variant="banner" />
 

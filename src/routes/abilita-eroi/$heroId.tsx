@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteFooter } from "@/components/megaad/SiteFooter";
 import { AbilityFAQModal } from "@/components/megaad/AbilityFAQModal";
+import { AlertTriangle } from "lucide-react";
 
 // ─── Hero Data ─────────────────────────────────────────────
 // Ogni eroe ha: nome, immagine(i), e testo descrizione abilità.
@@ -291,6 +292,14 @@ function HeroAbilityPage() {
               {hero.name}
             </h1>
             <div className="mx-auto mt-5 h-px w-32 gold-divider" />
+          </div>
+
+          {/* Warning Banner: Pagina in aggiornamento */}
+          <div className="max-w-3xl mx-auto mb-10 flex items-center gap-3 bg-gold/10 border border-gold/40 text-gold-soft px-4 py-3.5 rounded-lg shadow-[0_0_20px_rgba(212,175,55,0.15)]">
+            <AlertTriangle className="h-5 w-5 text-gold flex-shrink-0 animate-pulse" />
+            <p className="text-sm font-medium">
+              <strong>Pagina in aggiornamento:</strong> stiamo allineando tutte le descrizioni delle abilità degli eroi al regolamento ufficiale.
+            </p>
           </div>
 
           {/* Description + Images Layout */}

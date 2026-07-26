@@ -19,19 +19,19 @@ const heroData: Record<string, HeroAbility> = {
     name: "Agri",
     images: [],
     description:
-      "Sciame Appiccicoso: Infligge 2 danni a un nemico entro gittata e contemporaneamente cura un alleato scelto di 2 Punti Vita. Il bersaglio danneggiato e l'alleato curato possono essere differenti.",
+      "Sciame Appiccicoso: Infligge 2 danni a un nemico entro gittata e contemporaneamente cura un alleato scelto di 2 Punti Vita. Può anche decidere di non attivare entrambi gli effetti ma se decide di farlo devono essere entrambi nel suo range.",
   },
   aiona: {
     name: "Aiona",
     images: [],
     description:
-      "Vortice d'Acciaio: Infligge 4 danni a tutti i nemici presenti nelle caselle adiacenti ad Aiona. Gli alleati non vengono colpiti.",
+      "Vortice d'Acciaio: Infligge 4 danni a tutti i nemici presenti nelle caselle adiacenti ad Aiona (nelle caselle immediatamente sopra, sotto, destra e sinistra). Gli alleati non vengono colpiti.",
   },
   azrael: {
     name: "Azrael",
     images: [],
     description:
-      "Colpo Consacrato: Infligge 4 danni a un nemico entro gittata. Se il bersaglio viene colpito da almeno un altro attacco entro l'inizio del prossimo turno di Azrael, subirà 2 danni aggiuntivi per ogni attacco ricevuto durante quel periodo.",
+      "Colpo Consacrato: Infligge 4 danni a un nemico entro gittata. Se il bersaglio viene colpito da almeno un altro attacco entro l'inizio del prossimo turno di Azrael, il bersaglio subirà 2 danni aggiuntivi per ogni attacco ricevuto durante quel periodo.",
   },
   caspiana: {
     name: "Caspiana",
@@ -49,19 +49,19 @@ const heroData: Record<string, HeroAbility> = {
     name: "Elara",
     images: [],
     description:
-      "Dardo di Ghiaccio: Infligge 4 danni a un nemico entro gittata. Fino all'inizio del suo prossimo turno, il costo di movimento del bersaglio aumenta di 3 Mana per ogni casella percorsa.",
+      "Dardo di Ghiaccio: Infligge 4 danni a un nemico entro gittata.  All'inizio del prossimo turno del bersaglio, il costo di movimento aumenta di 3 Mana per ogni casella percorsa.",
   },
   faelan: {
     name: "Faelan",
     images: [],
     description:
-      "Tocco Rigenerante: Scegli un alleato. All'inizio dei suoi prossimi due turni, quell'alleato recupera 3 Punti Vita. L'effetto termina automaticamente dopo la seconda attivazione.",
+      "Tocco Rigenerante: Scegli un alleato. All'inizio dei suoi prossimi due turni, quell'alleato recupera 3 Punti Vita. L'effetto è cumulabile.",
   },
   gostrel: {
     name: "Gostrel",
     images: ["/abilit/gostrel.png"],
     description:
-      "Provocazione del Colosso (Passiva): All'inizio del turno avversario, tutti i nemici entro la gittata di Gostrel devono effettuare immediatamente un attacco base contro di lui, se possibile. Dopo aver eseguito questo attacco, quei nemici non possono effettuare ulteriori attacchi durante quel turno.",
+      "Provocazione del Colosso (Passiva): All'inizio del turno avversario, tutti i nemici entro la gittata di Gostrel devono effettuare immediatamente un attacco base contro di lui. Dopo aver eseguito questo attacco, a prescindere dall'esito, quei nemici non possono effettuare ulteriori attacchi durante quel turno.",
   },
   grorn: {
     name: "Grorn",
@@ -73,7 +73,7 @@ const heroData: Record<string, HeroAbility> = {
     name: "Hannya",
     images: ["/abilit/hannya1.png", "/abilit/hannya2.png"],
     description:
-      "Sguardo Incantatore: Scegli un nemico entro gittata. Il bersaglio viene ammaliato e può essere spostato fino a 3 caselle in direzione scelta dal giocatore che controlla Hannya. Al termine dello spostamento il bersaglio subisce 1 danno.",
+      "Sguardo Incantatore: Scegli un nemico entro gittata. Il bersaglio viene ammaliato e può essere spostato fino a 3 caselle in direzione scelta dal giocatore che controlla Hannya (orrizontale o verticale). Al termine dello spostamento il bersaglio subisce 1 danno.",
   },
   herkaimer: {
     name: "Herkaimer",

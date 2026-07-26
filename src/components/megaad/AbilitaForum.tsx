@@ -87,7 +87,7 @@ export function AbilitaForum() {
         .order("created_at", { ascending: false });
 
       if (error) {
-        console.error("Errore nel caricamento del forum:", error);
+        console.error("Errore nel caricamento del forum:", JSON.stringify(error, null, 2));
         toast.error("Impossibile caricare le discussioni del forum.");
         return;
       }
@@ -329,7 +329,7 @@ export function AbilitaForum() {
     setIsPublishing(false);
 
     if (error) {
-      console.error("Errore nella pubblicazione della domanda:", error);
+      console.error("Errore nella pubblicazione della domanda:", JSON.stringify(error, null, 2));
       toast.error("Impossibile pubblicare la domanda. Riprova.");
       return;
     }

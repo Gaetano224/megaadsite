@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { MessageSquare, ThumbsUp, Send, Search, Plus, X, Calendar, User, ChevronDown, ChevronUp, Trash2 } from "lucide-react";
+import { MessageSquare, ThumbsUp, Send, Search, Plus, X, Calendar, User, ChevronDown, ChevronUp, Trash2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ForumReply {
   id: string;
@@ -57,24 +58,66 @@ const heroesList = [
 ];
 
 export function AbilitaForum() {
-  const [questions, setQuestions] = useState<ForumQuestion[]>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("megaad_abilities_forum_v2");
-      if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch (e) {
-          console.error("Failed to parse saved forum questions", e);
-        }
-      }
-    }
-    return [];
-  });
+  const [questions, setQuestions] = useState<ForumQuestion[]>([]);
+  const [visitorId, setVisitorId] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isPublishing, setIsPublishing] = useState<boolean>(false);
 
-  // Sync to local storage
+  // Initialize visitor ID and load questions
   useEffect(() => {
-    localStorage.setItem("megaad_abilities_forum_v2", JSON.stringify(questions));
-  }, [questions]);
+    if (typeof window !== "undefined") {
+      let vid = localStorage.getItem("megaad_forum_visitor_id");
+      if (!vid) {
+        vid = `usr-${Math.random().toString(36).substring(2, 11)}-${Date.now()}`;
+        localStorage.setItem("megaad_forum_visitor_id", vid);
+      }
+      setVisitorId(vid);
+    }
+    fetchQuestions().finally(() => setIsLoading(false));
+  }, []);
+
+  const fetchQuestions = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("forum_questions")
+        .select(`
+          *,
+          replies:forum_replies(*)
+        `)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Errore nel caricamento del forum:", error);
+        toast.error("Impossibile caricare le discussioni del forum.");
+        return;
+      }
+
+      if (data) {
+        const formatted: ForumQuestion[] = data.map((q: any) => ({
+          id: q.id,
+          author: q.author,
+          heroId: q.hero_id,
+          content: q.content,
+          createdAt: q.created_at,
+          likes: q.likes,
+          likedBy: q.liked_by || [],
+          replies: (q.replies || [])
+            .map((r: any) => ({
+              id: r.id,
+              author: r.author,
+              content: r.content,
+              createdAt: r.created_at,
+              likes: r.likes,
+              likedBy: r.liked_by || [],
+            }))
+            .sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()),
+        }));
+        setQuestions(formatted);
+      }
+    } catch (err) {
+      console.error("fetchQuestions error:", err);
+    }
+  };
 
   // Filtering states
   const [selectedHeroFilter, setSelectedHeroFilter] = useState("all");
@@ -107,14 +150,17 @@ export function AbilitaForum() {
   };
 
   // Like Question
-  const handleLikeQuestion = (qId: string) => {
+  const handleLikeQuestion = async (qId: string) => {
+    if (!visitorId) return;
+
+    // Optimistic update
     setQuestions((prev) =>
       prev.map((q) => {
         if (q.id === qId) {
-          const hasLiked = q.likedBy.includes("user");
+          const hasLiked = q.likedBy.includes(visitorId);
           const updatedLikedBy = hasLiked
-            ? q.likedBy.filter((u) => u !== "user")
-            : [...q.likedBy, "user"];
+            ? q.likedBy.filter((u) => u !== visitorId)
+            : [...q.likedBy, visitorId];
           return {
             ...q,
             likes: q.likes + (hasLiked ? -1 : 1),
@@ -124,10 +170,24 @@ export function AbilitaForum() {
         return q;
       })
     );
+
+    const { error } = await supabase.rpc("toggle_question_like", {
+      question_id: qId,
+      visitor_id: visitorId,
+    });
+
+    if (error) {
+      console.error("Errore nel voto:", error);
+      toast.error("Errore durante il salvataggio del voto.");
+      fetchQuestions();
+    }
   };
 
   // Like Reply
-  const handleLikeReply = (qId: string, rId: string) => {
+  const handleLikeReply = async (qId: string, rId: string) => {
+    if (!visitorId) return;
+
+    // Optimistic update
     setQuestions((prev) =>
       prev.map((q) => {
         if (q.id === qId) {
@@ -135,10 +195,10 @@ export function AbilitaForum() {
             ...q,
             replies: q.replies.map((r) => {
               if (r.id === rId) {
-                const hasLiked = r.likedBy.includes("user");
+                const hasLiked = r.likedBy.includes(visitorId);
                 const updatedLikedBy = hasLiked
-                  ? r.likedBy.filter((u) => u !== "user")
-                  : [...r.likedBy, "user"];
+                  ? r.likedBy.filter((u) => u !== visitorId)
+                  : [...r.likedBy, visitorId];
                 return {
                   ...r,
                   likes: r.likes + (hasLiked ? -1 : 1),
@@ -152,55 +212,90 @@ export function AbilitaForum() {
         return q;
       })
     );
-  };
 
-  // Check if admin is authenticated
-  const checkAdminAuth = (): boolean => {
-    if (typeof window === "undefined") return false;
-    
-    // Check if already authenticated in this session
-    if (sessionStorage.getItem("megaad_admin_authenticated") === "true") {
-      return true;
+    const { error } = await supabase.rpc("toggle_reply_like", {
+      reply_id: rId,
+      visitor_id: visitorId,
+    });
+
+    if (error) {
+      console.error("Errore nel voto della risposta:", error);
+      toast.error("Errore durante il salvataggio del voto.");
+      fetchQuestions();
     }
-    
-    const password = window.prompt("Inserisci la password di amministrazione per procedere con l'eliminazione:");
-    if (password === "megaadadmin") {
-      sessionStorage.setItem("megaad_admin_authenticated", "true");
-      toast.success("Autenticato come amministratore.");
-      return true;
-    }
-    
-    if (password !== null) {
-      toast.error("Password errata. Permesso negato.");
-    }
-    return false;
   };
 
   // Delete Question
-  const handleDeleteQuestion = (qId: string) => {
-    if (!checkAdminAuth()) return;
+  const handleDeleteQuestion = async (qId: string) => {
+    let adminPassword = sessionStorage.getItem("megaad_admin_password") || "";
+    if (!adminPassword) {
+      const pwd = window.prompt("Inserisci la password di amministrazione per procedere con l'eliminazione:");
+      if (pwd === null) return; // user cancelled
+      adminPassword = pwd;
+    }
+
     if (window.confirm("Sei sicuro di voler eliminare questa domanda e tutte le sue risposte?")) {
-      setQuestions((prev) => prev.filter((q) => q.id !== qId));
-      toast.success("Domanda eliminata con successo.");
+      const { data, error } = await supabase.rpc("delete_forum_question", {
+        question_id: qId,
+        admin_password: adminPassword,
+      });
+
+      if (error) {
+        console.error("Errore nell'eliminazione della discussione:", error);
+        toast.error(error.message || "Permesso negato o password errata.");
+        sessionStorage.removeItem("megaad_admin_password"); // clear stored password in case of error
+        return;
+      }
+
+      if (data === true) {
+        sessionStorage.setItem("megaad_admin_password", adminPassword);
+        setQuestions((prev) => prev.filter((q) => q.id !== qId));
+        toast.success("Domanda eliminata con successo.");
+      } else {
+        toast.error("Impossibile eliminare la domanda.");
+      }
     }
   };
 
   // Delete Reply
-  const handleDeleteReply = (qId: string, rId: string) => {
-    if (!checkAdminAuth()) return;
+  const handleDeleteReply = async (qId: string, rId: string) => {
+    let adminPassword = sessionStorage.getItem("megaad_admin_password") || "";
+    if (!adminPassword) {
+      const pwd = window.prompt("Inserisci la password di amministrazione per procedere con l'eliminazione:");
+      if (pwd === null) return;
+      adminPassword = pwd;
+    }
+
     if (window.confirm("Sei sicuro di voler eliminare questa risposta?")) {
-      setQuestions((prev) =>
-        prev.map((q) => {
-          if (q.id === qId) {
-            return {
-              ...q,
-              replies: q.replies.filter((r) => r.id !== rId),
-            };
-          }
-          return q;
-        })
-      );
-      toast.success("Risposta eliminata con successo.");
+      const { data, error } = await supabase.rpc("delete_forum_reply", {
+        reply_id: rId,
+        admin_password: adminPassword,
+      });
+
+      if (error) {
+        console.error("Errore nell'eliminazione della risposta:", error);
+        toast.error(error.message || "Permesso negato o password errata.");
+        sessionStorage.removeItem("megaad_admin_password");
+        return;
+      }
+
+      if (data === true) {
+        sessionStorage.setItem("megaad_admin_password", adminPassword);
+        setQuestions((prev) =>
+          prev.map((q) => {
+            if (q.id === qId) {
+              return {
+                ...q,
+                replies: q.replies.filter((r) => r.id !== rId),
+              };
+            }
+            return q;
+          })
+        );
+        toast.success("Risposta eliminata con successo.");
+      } else {
+        toast.error("Impossibile eliminare la risposta.");
+      }
     }
   };
 
@@ -213,71 +308,113 @@ export function AbilitaForum() {
   };
 
   // Submit Question
-  const handleSubmitQuestion = (e: React.FormEvent) => {
+  const handleSubmitQuestion = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newQuestionName.trim() || !newQuestionContent.trim()) {
       toast.error("Per favore, compila tutti i campi obbligatori.");
       return;
     }
 
-    const newQuestion: ForumQuestion = {
-      id: `q-${Date.now()}`,
-      author: newQuestionName.trim(),
-      heroId: newQuestionHero,
-      content: newQuestionContent.trim(),
-      createdAt: new Date().toISOString(),
-      likes: 0,
-      likedBy: [],
-      replies: [],
-    };
+    setIsPublishing(true);
+    const { data, error } = await supabase
+      .from("forum_questions")
+      .insert({
+        author: newQuestionName.trim(),
+        hero_id: newQuestionHero,
+        content: newQuestionContent.trim(),
+      })
+      .select()
+      .single();
 
-    setQuestions((prev) => [newQuestion, ...prev]);
-    setNewQuestionName("");
-    setNewQuestionHero("general");
-    setNewQuestionContent("");
-    setShowAskForm(false);
-    toast.success("Domanda pubblicata con successo nel forum!");
+    setIsPublishing(false);
+
+    if (error) {
+      console.error("Errore nella pubblicazione della domanda:", error);
+      toast.error("Impossibile pubblicare la domanda. Riprova.");
+      return;
+    }
+
+    if (data) {
+      const newQuestion: ForumQuestion = {
+        id: data.id,
+        author: data.author,
+        heroId: data.hero_id,
+        content: data.content,
+        createdAt: data.created_at,
+        likes: 0,
+        likedBy: [],
+        replies: [],
+      };
+
+      setQuestions((prev) => [newQuestion, ...prev]);
+      setNewQuestionName("");
+      setNewQuestionHero("general");
+      setNewQuestionContent("");
+      setShowAskForm(false);
+      toast.success("Domanda pubblicata con successo nel forum!");
+    }
   };
 
   // Submit Reply
-  const handleSubmitReply = (e: React.FormEvent, qId: string) => {
+  const handleSubmitReply = async (e: React.FormEvent, qId: string) => {
     e.preventDefault();
     if (!newReplyName.trim() || !newReplyContent.trim()) {
       toast.error("Per favore, compila tutti i campi.");
       return;
     }
 
-    const newReply: ForumReply = {
-      id: `r-${Date.now()}`,
-      author: newReplyName.trim(),
-      content: newReplyContent.trim(),
-      createdAt: new Date().toISOString(),
-      likes: 0,
-      likedBy: [],
-    };
-
-    setQuestions((prev) =>
-      prev.map((q) => {
-        if (q.id === qId) {
-          return {
-            ...q,
-            replies: [...q.replies, newReply],
-          };
-        }
-        return q;
+    setIsPublishing(true);
+    const { data, error } = await supabase
+      .from("forum_replies")
+      .insert({
+        question_id: qId,
+        author: newReplyName.trim(),
+        content: newReplyContent.trim(),
       })
-    );
+      .select()
+      .single();
 
-    // Expand replies automatically when a new one is added
-    setExpandedRepliesIds((prev) => ({
-      ...prev,
-      [qId]: true,
-    }));
+    setIsPublishing(false);
 
-    setNewReplyName("");
-    setNewReplyContent("");
-    setShowReplyFormId(null);
-    toast.success("Risposta pubblicata con successo!");
+    if (error) {
+      console.error("Errore nella pubblicazione della risposta:", error);
+      toast.error("Impossibile inviare la risposta.");
+      return;
+    }
+
+    if (data) {
+      const newReply: ForumReply = {
+        id: data.id,
+        author: data.author,
+        content: data.content,
+        createdAt: data.created_at,
+        likes: 0,
+        likedBy: [],
+      };
+
+      setQuestions((prev) =>
+        prev.map((q) => {
+          if (q.id === qId) {
+            return {
+              ...q,
+              replies: [...q.replies, newReply],
+            };
+          }
+          return q;
+        })
+      );
+
+      // Expand replies automatically when a new one is added
+      setExpandedRepliesIds((prev) => ({
+        ...prev,
+        [qId]: true,
+      }));
+
+      setNewReplyName("");
+      setNewReplyContent("");
+      setShowReplyFormId(null);
+      toast.success("Risposta pubblicata con successo!");
+    }
   };
 
   // Filter questions
@@ -384,10 +521,11 @@ export function AbilitaForum() {
                     id="author-name"
                     type="text"
                     required
+                    disabled={isPublishing}
                     placeholder="Es. GuardianoDelleOmbre"
                     value={newQuestionName}
                     onChange={(e) => setNewQuestionName(e.target.value)}
-                    className="w-full rounded border border-gold/30 bg-navy px-4 py-2.5 text-foreground placeholder:text-muted-foreground/60 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold text-sm"
+                    className="w-full rounded border border-gold/30 bg-navy px-4 py-2.5 text-foreground placeholder:text-muted-foreground/60 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold text-sm disabled:opacity-50"
                   />
                 </div>
 
@@ -399,8 +537,9 @@ export function AbilitaForum() {
                   <select
                     id="hero-select"
                     value={newQuestionHero}
+                    disabled={isPublishing}
                     onChange={(e) => setNewQuestionHero(e.target.value)}
-                    className="w-full rounded border border-gold/30 bg-navy px-4 py-2.5 text-foreground focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold text-sm cursor-pointer"
+                    className="w-full rounded border border-gold/30 bg-navy px-4 py-2.5 text-foreground focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold text-sm cursor-pointer disabled:opacity-50"
                   >
                     {heroesList.map((hero) => (
                       <option key={hero.id} value={hero.id}>
@@ -420,10 +559,11 @@ export function AbilitaForum() {
                   id="question-content"
                   required
                   rows={4}
+                  disabled={isPublishing}
                   placeholder="Scrivi qui il tuo dubbio in modo dettagliato..."
                   value={newQuestionContent}
                   onChange={(e) => setNewQuestionContent(e.target.value)}
-                  className="w-full rounded border border-gold/30 bg-navy px-4 py-2.5 text-foreground placeholder:text-muted-foreground/60 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold text-sm"
+                  className="w-full rounded border border-gold/30 bg-navy px-4 py-2.5 text-foreground placeholder:text-muted-foreground/60 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold text-sm disabled:opacity-50"
                 />
               </div>
 
@@ -431,17 +571,27 @@ export function AbilitaForum() {
                 <button
                   type="button"
                   onClick={() => setShowAskForm(false)}
-                  className="px-4 py-2 text-xs uppercase tracking-widest text-gold/60 hover:text-gold border border-transparent hover:border-gold/30 rounded transition-all duration-300"
+                  disabled={isPublishing}
+                  className="px-4 py-2 text-xs uppercase tracking-widest text-gold/60 hover:text-gold border border-transparent hover:border-gold/30 rounded transition-all duration-300 disabled:opacity-50"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Annulla
                 </button>
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-navy bg-gold hover:bg-gold-soft px-6 py-2 rounded font-bold transition-all duration-300 cursor-pointer"
+                  disabled={isPublishing}
+                  className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-navy bg-gold hover:bg-gold-soft px-6 py-2 rounded font-bold transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  <Send className="h-3 w-3" /> Invia Domanda
+                  {isPublishing ? (
+                    <>
+                      <Loader2 className="h-3 w-3 animate-spin" /> Invia in corso...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="h-3 w-3" /> Invia Domanda
+                    </>
+                  )}
                 </button>
               </div>
             </form>
@@ -450,12 +600,19 @@ export function AbilitaForum() {
 
         {/* Questions List */}
         <div className="space-y-6">
-          {filteredQuestions.length > 0 ? (
+          {isLoading ? (
+            <div className="flex flex-col items-center justify-center py-16 gap-3">
+              <Loader2 className="h-8 w-8 text-gold animate-spin" />
+              <p className="text-gold/80 text-sm tracking-widest uppercase" style={{ fontFamily: "var(--font-display)" }}>
+                Caricamento forum...
+              </p>
+            </div>
+          ) : filteredQuestions.length > 0 ? (
             filteredQuestions.map((q) => {
               const heroObj = heroesList.find((h) => h.id === q.heroId);
               const isHeroGeneral = q.heroId === "general";
               const repliesCount = q.replies.length;
-              const hasUserLiked = q.likedBy.includes("user");
+              const hasUserLiked = q.likedBy.includes(visitorId);
               const isExpanded = !!expandedRepliesIds[q.id];
 
               return (
@@ -569,34 +726,42 @@ export function AbilitaForum() {
                           <input
                             type="text"
                             required
+                            disabled={isPublishing}
                             placeholder="Il tuo nome/pseudonimo"
                             value={newReplyName}
                             onChange={(e) => setNewReplyName(e.target.value)}
-                            className="w-full rounded border border-gold/20 bg-navy px-3 py-2 text-foreground placeholder:text-muted-foreground/60 focus:border-gold focus:outline-none text-sm"
+                            className="w-full rounded border border-gold/20 bg-navy px-3 py-2 text-foreground placeholder:text-muted-foreground/60 focus:border-gold focus:outline-none text-sm disabled:opacity-50"
                           />
                         </div>
                         <textarea
                           required
                           rows={3}
+                          disabled={isPublishing}
                           placeholder="Scrivi qui la tua risposta..."
                           value={newReplyContent}
                           onChange={(e) => setNewReplyContent(e.target.value)}
-                          className="w-full rounded border border-gold/20 bg-navy px-3 py-2 text-foreground placeholder:text-muted-foreground/60 focus:border-gold focus:outline-none text-sm"
+                          className="w-full rounded border border-gold/20 bg-navy px-3 py-2 text-foreground placeholder:text-muted-foreground/60 focus:border-gold focus:outline-none text-sm disabled:opacity-50"
                         />
                         <div className="flex justify-end gap-2">
                           <button
                             type="button"
                             onClick={() => setShowReplyFormId(null)}
-                            className="px-3 py-1 text-xs text-foreground/60 hover:text-gold transition-colors"
+                            disabled={isPublishing}
+                            className="px-3 py-1 text-xs text-foreground/60 hover:text-gold transition-colors disabled:opacity-50"
                           >
                             Annulla
                           </button>
                           <button
                             type="submit"
-                            className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-navy bg-gold hover:bg-gold-soft px-4 py-1.5 rounded font-bold transition-all duration-300 cursor-pointer"
+                            disabled={isPublishing}
+                            className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-navy bg-gold hover:bg-gold-soft px-4 py-1.5 rounded font-bold transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                             style={{ fontFamily: "var(--font-display)" }}
                           >
-                            Invia
+                            {isPublishing ? (
+                              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                            ) : (
+                              "Invia"
+                            )}
                           </button>
                         </div>
                       </form>
@@ -607,7 +772,7 @@ export function AbilitaForum() {
                   {isExpanded && repliesCount > 0 && (
                     <div className="mt-6 pl-4 md:pl-6 border-l border-gold/20 space-y-4">
                       {q.replies.map((reply) => {
-                        const hasReplyLiked = reply.likedBy.includes("user");
+                        const hasReplyLiked = reply.likedBy.includes(visitorId);
 
                         return (
                           <div

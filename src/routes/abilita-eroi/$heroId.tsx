@@ -121,7 +121,7 @@ const heroData: Record<string, HeroAbility> = {
     name: "Luver",
     images: [],
     description:
-      "Potenza Suprema: Luver seleziona due nemici qualsiasi sul campo di battaglia, indipendentemente dalla distanza tra loro o dalla propria gittata. E li scambia di posto tra di loro. Inoltre i due bersagli subiranno 2 danni",
+      "Potenza Suprema: Luver seleziona due nemici qualsiasi sul campo di battaglia, indipendentemente dalla distanza tra loro o dalla propria gittata e li scambia di posto tra di loro. Inoltre i due bersagli subiranno 2 danni",
   },
   montwel: {
     name: "Montwel",

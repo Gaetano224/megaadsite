@@ -79,19 +79,19 @@ const heroData: Record<string, HeroAbility> = {
     name: "Herkaimer",
     images: [],
     description:
-      "Martello del Potere: Infligge 1 danno a tutti i nemici presenti nella stessa colonna del bersaglio scelto. Tutti i nemici colpiti diventano inoltre Immobilizzati fino all'inizio del loro prossimo turno.",
+      "Martello del Potere: Infligge 1 danno a tutti i nemici presenti in una colonna (questa abilità non ha range). Tutti i nemici colpiti diventano inoltre Immobilizzati fino al loro prossimo turno.",
   },
   ioluali: {
     name: "Ioluali",
     images: [],
     description:
-      "Pasto Ideale: Scegli un alleato. All'inizio del suo prossimo turno recupererà 4 Punti Vita. L'effetto si applica una sola volta e poi termina.",
+      "Pasto Ideale: Scegli un alleato. All'inizio del suo prossimo turno recupererà 4 Punti Vita.",
   },
   istras: {
     name: "Istras",
     images: [],
     description:
-      "Freccia Velenosa: Infligge 3 danni immediatamente e ulteriori 3 danni all'inizio del prossimo turno del bersaglio, per un totale di 6 danni distribuiti su due turni.",
+      "Freccia Velenosa:  All'inizio dei suoi prossimi due turni (non immediatamente) il bersaglio subirà 3 danni per turno.",
   },
   kaelen: {
     name: "Kaelen",
@@ -103,37 +103,37 @@ const heroData: Record<string, HeroAbility> = {
     name: "Karka",
     images: [],
     description:
-      "Nenia della Forza: Tutti gli alleati della squadra recuperano immediatamente 2 Punti Vita, indipendentemente dalla loro posizione sul campo di battaglia. L'effetto non può aumentare i Punti Vita oltre il valore massimo iniziale di ciascun eroe.",
+      "Nenia della Forza: Tutti gli alleati della squadra recuperano immediatamente 2 Punti Vita, indipendentemente dalla loro posizione sul campo di battaglia.",
   },
   kenji: {
     name: "Kenji",
     images: ["/abilit/kenji1.png", "/abilit/kenji2.png"],
     description:
-      "Pugno di Salvezza: Kenji può scegliere un alleato oppure un nemico entro gittata:\n\n- Se il bersaglio è un alleato, viene spostato di 2 caselle in una direzione valida scelta dal giocatore che controlla Kenji.\n- Se il bersaglio è un nemico, viene spostato di 2 caselle, subisce 3 danni e viene inoltre Stordito fino all'inizio del suo prossimo turno. Un eroe stordito non può muoversi, attaccare o utilizzare abilità.",
+      "Pugno di Salvezza: Kenji può scegliere un alleato oppure un nemico entro gittata:\n\n- Se il bersaglio è un alleato, viene spostato di 1 o 2 caselle in una direzione valida scelta dal giocatore che controlla Kenji.\n- Se il bersaglio è un nemico, viene spostato di 1 o 2 caselle, subisce 3 danni e viene inoltre Stordito fino all'inizio del suo prossimo turno. Un eroe stordito non può muoversi, attaccare o utilizzare abilità.",
   },
   kirin: {
     name: "Kirin",
     images: [],
     description:
-      "Tiro di Fucile: Infligge 4 danni a un nemico entro gittata e lo Immobilizza fino all'inizio del suo prossimo turno. Un bersaglio immobilizzato non può muoversi ma può comunque attaccare e utilizzare abilità dalla propria posizione.",
+      "Tiro di Fucile: Infligge 4 danni a un nemico entro gittata e lo Immobilizza fino alla fine del suo turno. Un bersaglio immobilizzato non può muoversi ma può comunque attaccare e utilizzare abilità dalla propria posizione.",
   },
   luver: {
     name: "Luver",
     images: [],
     description:
-      "Potenza Suprema: Luver seleziona due nemici qualsiasi sul campo di battaglia, indipendentemente dalla distanza tra loro o dalla propria gittata. I due bersagli si scambiano immediatamente di posizione e subiscono entrambi 2 danni. Se una delle due caselle non può essere occupata dal nuovo bersaglio, lo scambio non può essere effettuato.",
+      "Potenza Suprema: Luver seleziona due nemici qualsiasi sul campo di battaglia, indipendentemente dalla distanza tra loro o dalla propria gittata.",
   },
   montwel: {
     name: "Montwel",
     images: ["/abilit/montwel2.png"],
     description:
-      "Mossa Imprevedibile: L'effetto dell'abilità dipende dalla distanza dal bersaglio:\n\n- Se il bersaglio si trova a una distanza compresa tra 2 e 4 caselle, subisce 3 danni e viene Immobilizzato fino all'inizio del suo prossimo turno.\n- Se il bersaglio si trova a 1 casella di distanza, subisce invece 5 danni, senza subire immobilizzazione.",
+      "Mossa Imprevedibile: L'effetto dell'abilità dipende dalla distanza dal bersaglio:\n\n- Se il bersaglio si trova a una distanza compresa tra 2 e 4 caselle, subisce 3 danni e viene Immobilizzato fino all'inizio del suo prossimo turno.\n- Se il bersaglio si trova adiacente subisce invece 5 danni, senza subire immobilizzazione.",
   },
   ollerts: {
     name: "Ollerts",
     images: ["/abilit/ollerts.png"],
     description:
-      "Morso del Pipistrello (Passiva): Quando Ollerts colpisce un nemico alle spalle, il suo attacco infligge 7 danni aggiuntivi. Un attacco è considerato \"alle spalle\" quando Ollerts si trova nella casella immediatamente opposta rispetto alla direzione verso cui è rivolto il bersaglio secondo l'orientamento del tassello o secondo le regole concordate dai giocatori a inizio partita.\n\n*Definizione ufficiale di \"alle spalle\": Si considera che Ollerts colpisca alle spalle se l'attacco viene effettuato posizionandosi nella casella che si trova alle spalle dell'orientamento del bersaglio (es. opposta alla direzione frontale del tassello dell'eroe bersaglio).*",
+      "Morso del Pipistrello (Passiva): Quando Ollerts colpisce un nemico alle spalle, il suo attacco infligge 7 danni aggiuntivi. Un attacco è considerato \"alle spalle\" quando Ollerts si trova nella casella immediatamente opposta rispetto alla direzione verso cui è rivolto il bersaglio secondo l'orientamento del tassello.\n\n*Definizione ufficiale di \"alle spalle\": Si considera che Ollerts colpisca alle spalle se l'attacco viene effettuato posizionandosi nella casella che si trova alle spalle dell'orientamento del bersaglio (es. opposta alla direzione frontale del tassello dell'eroe bersaglio).*",
   },
   portium: {
     name: "Portium",
@@ -145,43 +145,43 @@ const heroData: Record<string, HeroAbility> = {
     name: "Rapdar",
     images: [],
     description:
-      "Urlo di Guerra: Scegli un alleato entro gittata. Il suo prossimo attacco base infliggerà 3 danni aggiuntivi. Il bonus viene consumato al primo attacco base effettuato, indipendentemente dal bersaglio scelto.",
+      "Urlo di Guerra: Scegli un alleato entro gittata. Il suo prossimo attacco base infliggerà 3 danni aggiuntivi. Il bonus viene consumato al primo attacco base effettuato.",
   },
   ryker: {
     name: "Ryker",
     images: ["/abilit/ryker.png"],
     description:
-      "Fulmine a Catena: Infligge 5 danni al bersaglio principale scelto entro gittata. Inoltre, tutti i nemici adiacenti al bersaglio principale subiscono 3 danni aggiuntivi. Gli alleati non vengono colpiti dall'effetto secondario.",
+      "Fulmine a Catena: Infligge 5 danni al bersaglio principale scelto entro gittata. Inoltre, tutti i nemici adiacenti al bersaglio principale subiscono 3 danni aggiuntivi. Per ogni bersaglio bisognerà tirare il dado ma se il primo bersaglio schiva l'attacco automaticamente anche i bersagli adiacenti sono salvi. Gli alleati non vengono colpiti dall'effetto secondario.",
   },
   sertor: {
     name: "Sertor",
     images: [],
     description:
-      "Vendetta Fredda: Sertor avvelena il bersaglio con un attacco speciale. Il nemico subisce 3 danni all'inizio dei suoi prossimi due turni, per un totale di 6 danni nel tempo. Gli effetti del veleno si applicano anche se Sertor viene sconfitto nel frattempo.",
+      "Vendetta Fredda: Sertor avvelena il bersaglio con un attacco speciale. Il nemico subisce 3 danni all'inizio dei suoi prossimi due turni. Gli effetti del veleno si applicano anche se Sertor viene sconfitto nel frattempo.",
   },
   sindaum: {
     name: "Sindaum",
     images: [],
     description:
-      "Protezione Inumana: Sindaum protegge tutti gli alleati adiacenti a lui fino all'inizio del suo prossimo turno. Per ciascun alleato protetto vengono annullati i primi 6 danni subiti durante questo periodo. I danni eccedenti vengono applicati normalmente.",
+      "Protezione Inumana: Sindaum protegge tutti gli alleati adiacenti a lei fino all'inizio del suo prossimo turno. Per ciascun alleato protetto vengono annullati i primi 6 danni subiti durante questo periodo. I danni eccedenti vengono applicati normalmente.",
   },
   "sir-gideon": {
     name: "Sir Gideon",
     images: ["/abilit/sir.png"],
     description:
-      "Urto Poderoso: Scegli un nemico entro gittata e spostalo di 2 caselle in linea retta in una direzione valida. Al termine dello spostamento il bersaglio subisce 3 danni. Se lo spostamento viene interrotto da un ostacolo, il bersaglio viene fermato nella prima casella disponibile.",
+      "Urto Poderoso: Scegli un nemico entro gittata e spostalo di 2 caselle in linea retta orizzontale o verticale. Al termine dello spostamento il bersaglio subisce 3 danni. Se lo spostamento viene interrotto da un ostacolo, il bersaglio viene fermato nella prima casella disponibile ma subisce comunque danni.",
   },
   theron: {
     name: "Theron",
     images: ["/abilit/theron.png"],
     description:
-      "Presa Rampicante: Seleziona un'area 3×3 entro gittata. Tutti i nemici presenti nell'area subiscono 1 danno e diventano Immobilizzati fino all'inizio del loro prossimo turno. Un eroe immobilizzato non può muoversi ma può comunque attaccare e usare abilità.",
+      "Presa Rampicante: Seleziona un'area 3×3 entro gittata purchè la casella centrale del quadrato 3x3 sia in gittata (può essere anche senza nemici). Tutti i nemici presenti nell'area subiscono 1 danno e diventano Immobilizzati fino all'inizio del loro prossimo turno. Un eroe immobilizzato non può muoversi ma può comunque attaccare e usare abilità.",
   },
   vespyr: {
     name: "Vespyr",
     images: [],
     description:
-      "Patto di Sangue: Vespyr recupera immediatamente 7 Punti Vita, quindi subisce 2 danni non prevenibili. L'abilità non può aumentare i suoi Punti Vita oltre il valore massimo iniziale.",
+      "Patto di Sangue: Vespyr fa recuperare immediatamente 7 Punti Vita ad un alleato ma lui stesso subisce 2 danni. L'abilità non può curare un alleato oltre i suoi Punti Vita massimi.",
   },
   xelif: {
     name: "Xelif",
@@ -193,7 +193,7 @@ const heroData: Record<string, HeroAbility> = {
     name: "Zayne",
     images: ["/abilit/zayne.png"],
     description:
-      "Passo d'Ombra: Zayne si sposta in linea retta fino a una casella libera adiacente a un alleato scelto. Dopo lo spostamento infligge immediatamente 6 danni a un nemico entro gittata. Lo spostamento ignora la distanza normale percorribile tramite movimento standard.",
+      "Passo d'Ombra: Zayne si sposta in linea retta fino a una casella libera adiacente a un alleato scelto. Dopo lo spostamento infligge immediatamente 6 danni a un nemico entro gittata. A prescindere dall'esito dell'attacco zayne resterà in quella casella.",
   },
 };
 

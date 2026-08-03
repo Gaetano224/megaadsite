@@ -199,6 +199,9 @@ export function ProductTabs() {
                 <p className="text-sm text-foreground/85 leading-relaxed">
                   Lo scopo è sconfiggere gli eroi nemici fino ad arrivare a una differenza di 3 giocatori. In una partita 2vs2 si ha vittoria nei casi: <strong>6-3, 5-2, 4-1, 3-1</strong>. La partita finisce in parità in caso di: <strong>2-1, 1-1, 2-2</strong> (nel caso 1vs1 si esclude solo la combinazione 6-3).
                 </p>
+                <p className="text-xs text-foreground/75 italic border-l-2 border-gold-soft/40 pl-3 mt-2 leading-relaxed">
+                  <strong>N.B.</strong> Nelle partite a 4 giocatori, se un giocatore rimane senza eroi in gioco, il suo turno viene normalmente saltato. Di conseguenza, la squadra avversaria finirà per giocare due turni consecutivi.
+                </p>
               </div>
             </div>
           </div>

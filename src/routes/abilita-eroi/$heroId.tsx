@@ -127,13 +127,13 @@ const heroData: Record<string, HeroAbility> = {
     name: "Montwel",
     images: ["/abilit/montwel2.png"],
     description:
-      "Mossa Imprevedibile: L'effetto dell'abilità dipende dalla distanza dal bersaglio:\n\n- Se il bersaglio si trova a una distanza compresa tra 2 e 4 caselle, subisce 3 danni e viene Immobilizzato fino all'inizio del suo prossimo turno.\n- Se il bersaglio si trova adiacente subisce invece 5 danni, senza subire immobilizzazione.",
+      "Mossa Imprevedibile: L'effetto dell'abilità dipende dalla distanza dal bersaglio:\n\n- Se il bersaglio si trova a una distanza compresa tra 2 e 4 caselle, subisce 3 danni e viene Immobilizzato fino all'inizio del suo prossimo turno.\n- Se il bersaglio si trova adiacente subisce invece 5 danni, senza subire immobilizzazione. ",
   },
   ollerts: {
     name: "Ollerts",
     images: ["/abilit/ollerts.png"],
     description:
-      "Morso del Pipistrello (Passiva): Quando Ollerts colpisce un nemico alle spalle, il suo attacco infligge 7 danni aggiuntivi. Un attacco è considerato \"alle spalle\" quando Ollerts si trova nella casella immediatamente opposta rispetto alla direzione verso cui è rivolto il bersaglio secondo l'orientamento del tassello.\n\n*Definizione ufficiale di \"alle spalle\": Si considera che Ollerts colpisca alle spalle se l'attacco viene effettuato posizionandosi nella casella che si trova alle spalle dell'orientamento del bersaglio (es. opposta alla direzione frontale del tassello dell'eroe bersaglio).*",
+      "Morso del Pipistrello (Passiva): Quando Ollerts colpisce un nemico alle spalle, il suo attacco infligge 7 danni pagando 4 mana. Un attacco è considerato \"alle spalle\" quando Ollerts si trova nella casella immediatamente opposta rispetto alla direzione verso cui è rivolto il bersaglio secondo l'orientamento del tassello.\n\n*Definizione ufficiale di \"alle spalle\": Si considera che Ollerts colpisca alle spalle se l'attacco viene effettuato posizionandosi nella casella che si trova alle spalle dell'orientamento del bersaglio (es. opposta alla direzione frontale del tassello dell'eroe bersaglio).*",
   },
   portium: {
     name: "Portium",

@@ -193,7 +193,7 @@ const heroData: Record<string, HeroAbility> = {
     name: "Zayne",
     images: ["/abilit/zayne.png"],
     description:
-      "Passo d'Ombra: Zayne si sposta in linea retta fino a una casella libera adiacente a un alleato scelto. Dopo lo spostamento infligge immediatamente 6 danni a un nemico entro gittata. A prescindere dall'esito dell'attacco zayne resterà in quella casella.",
+      "Passo d'Ombra: Zayne si sposta in linea retta fino a una casella libera adiacente a un nemico scelto. Dopo lo spostamento infligge immediatamente 6 danni a un nemico entro gittata. A prescindere dall'esito dell'attacco Zayne resterà in quella casella.",
   },
 };
 

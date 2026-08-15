@@ -19,7 +19,7 @@ const heroData: Record<string, HeroAbility> = {
     name: "Agri",
     images: [],
     description:
-      "Sciame Appiccicoso: Infligge 2 danni a un nemico entro gittata e contemporaneamente cura un alleato scelto di 2 Punti Vita. Può anche decidere di non attivare entrambi gli effetti ma se decide di farlo devono essere entrambi nel suo range.",
+      "Sciame Appiccicoso: Infligge 2 danni a un nemico entro gittata e contemporaneamente cura un alleato entro gittata di 2 Punti Vita. Può anche decidere di non attivare entrambi gli effetti ma se decide di farlo devono essere entrambi nel suo range.",
   },
   aiona: {
     name: "Aiona",
@@ -31,7 +31,7 @@ const heroData: Record<string, HeroAbility> = {
     name: "Azrael",
     images: [],
     description:
-      "Colpo Consacrato: Infligge 4 danni a un nemico entro gittata. Se il bersaglio viene colpito da almeno un altro attacco entro l'inizio del prossimo turno di Azrael, il bersaglio subirà 2 danni aggiuntivi per ogni attacco ricevuto durante quel periodo.",
+      "Colpo Consacrato: Infligge 4 danni a un nemico entro gittata. Se il bersaglio viene colpito da almeno un altro attacco entro l'inizio del prossimo turno di chi controlla Azrael, il bersaglio subirà 2 danni aggiuntivi per ogni attacco ricevuto durante quel periodo.",
   },
   caspiana: {
     name: "Caspiana",
@@ -49,13 +49,13 @@ const heroData: Record<string, HeroAbility> = {
     name: "Elara",
     images: [],
     description:
-      "Dardo di Ghiaccio: Infligge 4 danni a un nemico entro gittata.  All'inizio del prossimo turno del bersaglio, il costo di movimento aumenta di 3 Mana per ogni casella percorsa.",
+      "Dardo di Ghiaccio: Infligge 4 danni a un nemico entro gittata.  All'inizio del prossimo turno del bersaglio, il costo di movimento aumenta di 3 Mana per ogni casella percorsa dal bersaglio.",
   },
   faelan: {
     name: "Faelan",
     images: [],
     description:
-      "Tocco Rigenerante: Scegli un alleato. All'inizio dei suoi prossimi due turni, quell'alleato recupera 3 Punti Vita. L'effetto è cumulabile.",
+      "Tocco Rigenerante: Scegli un alleato entro gittata. All'inizio dei suoi prossimi due turni, quell'alleato recupera 3 Punti Vita. L'effetto è cumulabile.",
   },
   gostrel: {
     name: "Gostrel",
@@ -67,37 +67,37 @@ const heroData: Record<string, HeroAbility> = {
     name: "Grorn",
     images: [],
     description:
-      "Carica Travolgente: Grorn si muove di 2 caselle in linea retta. Il primo nemico attraversato o raggiunto durante la carica subisce 4 danni. Lo spostamento termina immediatamente dopo aver colpito un bersaglio.",
+      "Carica Travolgente: Grorn si muove di 2 caselle in linea retta. Appena incontra un nemico entro gittata, questo subisce 4 danni e Grorn termina il suo movimento. Se non incontra nessuno nel movimento Grorn terminerà lo spostamento dopo le 2 caselle",
   },
   hannya: {
     name: "Hannya",
     images: ["/abilit/hannya1.png", "/abilit/hannya2.png"],
     description:
-      "Sguardo Incantatore: Scegli un nemico entro gittata. Il bersaglio viene ammaliato e può essere spostato fino a 3 caselle in direzione scelta dal giocatore che controlla Hannya (orrizontale o verticale). Al termine dello spostamento il bersaglio subisce 1 danno.",
+      "Sguardo Incantatore: Scegli un nemico entro gittata. Il bersaglio può essere spostato fino a 3 caselle in direzione scelta dal giocatore che controlla Hannya (orrizontale o verticale). Lo spostamento del nemico tiene in considerazione gli ostacoli della mappa. Al termine dello spostamento il bersaglio subisce 1 danno.",
   },
   herkaimer: {
     name: "Herkaimer",
     images: [],
     description:
-      "Martello del Potere: Infligge 1 danno a tutti i nemici presenti in una colonna (questa abilità non ha range). Tutti i nemici colpiti diventano inoltre Immobilizzati fino al loro prossimo turno.",
+      "Martello del Potere: Infligge 1 danno a tutti i nemici presenti in una colonna (questa abilità non tiene in considerazione il range). Tutti i nemici colpiti diventano inoltre Immobilizzati fino al loro prossimo turno. Bisognerà tirare il dado per ogni nemico presente nella colonna. Montagna o fossa bloccano l'effetto.",
   },
   ioluali: {
     name: "Ioluali",
     images: [],
     description:
-      "Pasto Ideale: Scegli un alleato. All'inizio del suo prossimo turno recupererà 4 Punti Vita.",
+      "Pasto Ideale: Scegli un alleato entro gittata. All'inizio del suo prossimo turno recupererà 4 Punti Vita.",
   },
   istras: {
     name: "Istras",
     images: [],
     description:
-      "Freccia Velenosa:  All'inizio dei suoi prossimi due turni (non immediatamente) il bersaglio subirà 3 danni per turno.",
+      "Freccia Velenosa:  All'inizio dei suoi prossimi due turni il bersaglio colpito entro gittata subirà 3 danni per turno.",
   },
   kaelen: {
     name: "Kaelen",
     images: ["/abilit/kaelen1.png"],
     description:
-      "Affondo Perforante: Kaelen colpisce fino a due nemici adiacenti tra loro e disposti in linea retta rispetto alla direzione dell'attacco. Entrambi i bersagli subiscono 4 danni. Se è presente un solo bersaglio valido, l'abilità colpisce soltanto quello.",
+      "Affondo Perforante: Kaelen colpisce fino a due nemici adiacenti tra loro e disposti in linea retta rispetto alla direzione dell'attacco. Dopo aver tirato il dado (uno per ogni nemico bersagliato) questi subviranno 4 danni. Se è presente un solo bersaglio valido, l'abilità colpisce soltanto quello.",
   },
   karka: {
     name: "Karka",

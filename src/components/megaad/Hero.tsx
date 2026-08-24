@@ -28,11 +28,6 @@ export function Hero() {
           <div className="md:col-span-5 flex flex-col gap-4">
             {/* Viewport */}
             <div className="relative aspect-[4/5] flex items-center justify-center">
-              {/* Product Badge */}
-              <div className="absolute top-4 left-4 z-10 bg-gold px-3 py-1.5 rounded text-[10px] uppercase font-bold tracking-widest text-primary-foreground shadow-md">
-                Prossima Uscita
-              </div>
-              
               <img
                 src={activeImg.url}
                 alt={activeImg.alt}
